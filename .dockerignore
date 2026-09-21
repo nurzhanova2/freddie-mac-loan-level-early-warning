@@ -1,0 +1,16 @@
+# The development image needs only the UI source and its locked dependencies.
+# The full repository is mounted at runtime by Docker Compose.
+*
+!package.json
+!package-lock.json
+!vite.config.js
+!src/
+!src/prototype/
+!src/prototype/ui/
+!src/prototype/ui/**
+!src/prototype/api/
+!src/prototype/api/**
+!requirements-api.txt
+!alembic.ini
+!alembic/
+!alembic/**

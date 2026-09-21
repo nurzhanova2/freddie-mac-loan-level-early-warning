@@ -1,0 +1,51 @@
+services:
+  suptech-db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-suptech}
+      POSTGRES_USER: ${POSTGRES_USER:-suptech}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change-me-local-only}
+    ports:
+      - "5432:5432"
+    volumes:
+      - suptech_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+
+  suptech-api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-suptech}:${POSTGRES_PASSWORD:-change-me-local-only}@suptech-db:5432/${POSTGRES_DB:-suptech}
+      SUPTECH_DEMO_PASSWORD: ${SUPTECH_DEMO_PASSWORD:-demo-password-change-me}
+      SUPTECH_AUTH_SECRET: ${SUPTECH_AUTH_SECRET:-replace-this-local-development-secret}
+    volumes:
+      - ./src/prototype/api:/app/src/prototype/api
+    depends_on:
+      suptech-db:
+        condition: service_healthy
+    command: sh -c "alembic upgrade head && uvicorn src.prototype.api.app.main:app --host 0.0.0.0 --port 8000 --reload"
+
+  suptech-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      VITE_API_BASE_URL: http://localhost:8000/api/v1
+    volumes:
+      - .:/app
+      - suptech_node_modules:/app/node_modules
+    command: npm run dev
+
+volumes:
+  suptech_node_modules:
+  suptech_postgres_data:

@@ -44,7 +44,7 @@ def main() -> None:
         year = cohort[:4]
         if not (panel.is_file() and events.is_file() and panel_report.is_file()):
             run([
-                sys.executable, "fannie_mae/src/build_fannie_monthly_panel.py",
+                sys.executable, "src/fannie_mae/build_fannie_monthly_panel.py",
                 "--source", f"fannie_mae/data/raw/{cohort}/{cohort}.zip",
                 "--glossary", str(glossary),
                 "--dictionary", f"fannie_mae/data/dictionaries/{year}q3_field_dictionary.csv",
@@ -53,7 +53,7 @@ def main() -> None:
             ])
         if not (outcome.is_file() and outcome_report.is_file()):
             run([
-                sys.executable, "fannie_mae/src/build_fannie_outcomes.py",
+                sys.executable, "src/fannie_mae/build_fannie_outcomes.py",
                 "--panel", str(panel), "--events", str(events),
                 "--output", str(outcome), "--report", str(outcome_report),
                 "--temp-dir", f"fannie_mae/data/interim/duckdb_q3_{cohort}",

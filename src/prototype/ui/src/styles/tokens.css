@@ -1,0 +1,17 @@
+:root {
+  --ink: #201e1d;
+  --paper: #f3f2f2;
+  --white: #ffffff;
+  --navy: #102b4e;
+  --turquoise: #087e8b;
+  --amber: #a85d00;
+  --red: #b52417;
+  --rule: #a8a5a1;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --max-content: 76rem;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}

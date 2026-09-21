@@ -11,22 +11,22 @@ To run stages 4–6, download a matched pair from Freddie Mac Clarity and place
 the files under `data/raw/<vintage>/`.
 
 ```bash
-python3 src/validate_raw_files.py \
+python3 src/freddie_mac/validate_raw_files.py \
   --origination data/raw/<vintage>/sample_orig_YYYY.txt \
   --performance data/raw/<vintage>/sample_perf_YYYY.txt \
   --output reports/<vintage>_raw_validation.json
 
-python3 src/prepare_release_47.py clean-origination \
+python3 src/freddie_mac/prepare_release_47.py clean-origination \
   --source data/raw/<vintage>/sample_orig_YYYY.txt \
   --output data/interim/<vintage>_origination_clean.csv \
   --audit reports/<vintage>_origination_cleaning.json
 
-python3 src/prepare_release_47.py clean-performance \
+python3 src/freddie_mac/prepare_release_47.py clean-performance \
   --source data/raw/<vintage>/sample_perf_YYYY.txt \
   --output data/interim/<vintage>_performance_clean.csv \
   --audit reports/<vintage>_performance_cleaning.json
 
-python3 src/prepare_release_47.py build-panel \
+python3 src/freddie_mac/prepare_release_47.py build-panel \
   --origination data/interim/<vintage>_origination_clean.csv \
   --performance data/interim/<vintage>_performance_clean.csv \
   --output data/interim/<vintage>_monthly_panel_base.csv \

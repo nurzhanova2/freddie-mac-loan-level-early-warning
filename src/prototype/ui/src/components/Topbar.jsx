@@ -1,0 +1,5 @@
+function Topbar({ language, onLanguageChange, identity, onLogout }) {
+  const russian = language === 'ru';
+  return <header className="topbar"><div><p className="topbar__eyebrow">Research prototype</p><p className="topbar__title">{russian ? 'Объяснимая SupTech-система раннего предупреждения ухудшения состояния заёмщика' : 'Explainable SupTech Early-Warning System for Borrower Deterioration'}</p><p className="topbar__meta">{russian ? 'Fannie Mae · когорты Q1 + Q3 · янв. 2006 — сен. 2025' : 'Fannie Mae · Q1 + Q3 cohorts · Jan 2006 — Sep 2025'}</p></div><div className="topbar__actions"><span className="tag tag--prototype">{identity.username}</span><span className="tag tag--model">{identity.role}</span><div className="language-switch"><button className={russian ? 'is-active' : ''} type="button" onClick={() => onLanguageChange('ru')}>RU</button><button className={!russian ? 'is-active' : ''} type="button" onClick={() => onLanguageChange('en')}>EN</button></div><button className="logout-button" type="button" onClick={onLogout}>{russian ? 'Выйти' : 'Sign out'}</button></div></header>;
+}
+export default Topbar;

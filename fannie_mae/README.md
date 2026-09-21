@@ -8,12 +8,12 @@ dynamic monthly performance records.
 Run stages 4–6 from this directory's parent with:
 
 ```bash
-python3 fannie_mae/src/validate_fannie_zip.py \
+python3 src/fannie_mae/validate_fannie_zip.py \
   --source fannie_mae/data/raw/2008Q1/2008Q1.zip \
   --report fannie_mae/reports/2008Q1_raw_validation.json \
   --manifest fannie_mae/data/manifests/data_manifest.csv
 
-python3 fannie_mae/src/build_fannie_monthly_panel.py \
+python3 src/fannie_mae/build_fannie_monthly_panel.py \
   --source fannie_mae/data/raw/2008Q1/2008Q1.zip \
   --glossary fannie_mae/docs/sources/crt-file-layout-and-glossary.xlsx \
   --dictionary fannie_mae/data/dictionaries/fannie_2008q1_field_dictionary.csv \

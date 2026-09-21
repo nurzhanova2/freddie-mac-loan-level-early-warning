@@ -1,7 +1,7 @@
 # Stage 11. Initial exploratory analysis and feature preparation
 
 **Status: the initial exploratory analysis is complete; the baseline v01 safe
-feature set is fixed.** The analysis is fully reproducible through `src/analyze_fannie_eda.py`
+feature set is fixed.** The analysis is fully reproducible through `src/fannie_mae/analyze_fannie_eda.py`
 and uses Fannie Mae processed panels only. Raw ZIP archives were not changed and
 Freddie Mac data were not joined.
 

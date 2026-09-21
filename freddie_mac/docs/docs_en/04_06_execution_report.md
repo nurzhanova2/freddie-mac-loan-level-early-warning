@@ -21,7 +21,7 @@ strictly limited to schema and pipeline validation.
 ## 5. Cleaning and standardisation
 
 A reproducible script,
-[`prepare_release_47.py`](../../src/prepare_release_47.py), has been
+[`prepare_release_47.py`](../../src/freddie_mac/prepare_release_47.py), has been
 implemented. It assigns official headers to pipe-delimited files, validates each
 row width, converts blanks to `null`, parses `YYYYMM` dates, casts numeric
 fields and replaces only documented `Not Available`/`Unknown` codes. The rules
