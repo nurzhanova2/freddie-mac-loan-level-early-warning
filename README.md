@@ -104,7 +104,57 @@ src/
 
 fannie_mae/               # Fannie Mae data, models, reports, and documentation
 freddie_mac/              # Freddie Mac data, reports, and documentation
+docs/assets/screenshots/  # versioned screenshots used by project documentation
 tests/                    # API and frontend policy tests
 ```
 
 The two providers are not combined into a single training table: the active model uses Fannie Mae, while Freddie Mac is retained as an independent data source for future transferability validation.
+
+## Interface screenshots
+
+The screenshots below were captured from the local development prototype. Alert
+records are synthetic demonstrations; no raw Fannie Mae records are displayed.
+
+### Access and research evidence
+
+![Sign-in screen with language selector](docs/assets/screenshots/suptech/login.png)
+
+*Figure 1. Local sign-in screen with RU/EN language selection.*
+
+![Research overview](docs/assets/screenshots/suptech/research-overview.png)
+
+*Figure 2. Research overview: research gap, objective, contribution and the controlled review workflow.*
+
+![Dataset overview](docs/assets/screenshots/suptech/dataset-overview.png)
+
+*Figure 3. Dataset overview: cohort coverage, volume and outcome-rate comparison for Q1 and Q3.*
+
+![Research design](docs/assets/screenshots/suptech/research-design.png)
+
+*Figure 4. Research design: temporal splits, outcome definitions and anti-leakage controls.*
+
+![Model performance](docs/assets/screenshots/suptech/model-performance.png)
+
+*Figure 5. Independent out-of-time model evaluation and trigger-policy results.*
+
+![Robustness across cohorts](docs/assets/screenshots/suptech/cohort-robustness.png)
+
+*Figure 6. Cross-cohort robustness: SHAP rank correlations and leading explanatory factors.*
+
+![Research conclusions](docs/assets/screenshots/suptech/research-conclusions.png)
+
+*Figure 7. Research conclusions and the boundary of practical use of the prototype.*
+
+### Early-warning workflow
+
+![Alert queue](docs/assets/screenshots/suptech/alert-queue.png)
+
+*Figure 8. Alert queue with tier, review-status and alert-ID filters.*
+
+![Alert detail](docs/assets/screenshots/suptech/alert-detail.png)
+
+*Figure 9. Alert-detail view with risk score, trigger threshold, local SHAP explanation and expert-review form.*
+
+![Risk monitoring](docs/assets/screenshots/suptech/risk-monitoring.png)
+
+*Figure 10. Risk-monitoring view: alert volumes, Red/Amber distribution and human-in-the-loop boundary.*
