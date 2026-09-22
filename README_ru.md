@@ -93,9 +93,7 @@ demo-password-change-me
 В браузер **никогда не передаются** raw Fannie Mae файлы, стабильные loan IDs,
 полные feature vectors или обучающие выборки. Подключение реальной
 исследовательской витрины допускается только через предварительно разрешённый
-CSV export и серверный adapter. Подробности — в
-[контракте данных](docs/suptech/09_data_contract_and_access_policy.md) и
-[архитектурной документации](docs/suptech/README.md).
+CSV export и серверный adapter.
 
 ## Проверка разработки
 

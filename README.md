@@ -81,7 +81,7 @@ Workflow safeguards:
 
 By default, the API uses synthetic demonstration alerts. The browser interface receives only a safe alert DTO containing the score, tier, cohort, observation date, SHAP explanatory factor, and model/data versions.
 
-The browser **never receives** raw Fannie Mae files, persistent loan IDs, complete feature vectors, or training datasets. A real research data mart may only be connected through a pre-approved CSV export and a server-side adapter. See the [data contract](docs/suptech/09_data_contract_and_access_policy.md) and [architecture documentation](docs/suptech/README.md) for details.
+The browser **never receives** raw Fannie Mae files, persistent loan IDs, complete feature vectors, or training datasets. A real research data mart may only be connected through a pre-approved CSV export and a server-side adapter. 
 
 ## Development Verification
 
