@@ -13,12 +13,13 @@ export const screenGroups = [
   {
     id: 'ews', label: 'SupTech Early-Warning System', ruLabel: 'Система раннего предупреждения',
     screens: [
-      { id: 'ews-dashboard', title: 'EWS Dashboard', ruTitle: 'Панель раннего предупреждения', roles: ['research_viewer', 'risk_analyst', 'model_governance', 'data_steward'] },
-      { id: 'ews-alert-queue', title: 'Alert Queue', ruTitle: 'Очередь сигналов', roles: ['research_viewer', 'risk_analyst', 'model_governance', 'data_steward'] },
-      { id: 'ews-alert-detail', title: 'Alert Detail', ruTitle: 'Карточка сигнала', roles: ['research_viewer', 'risk_analyst', 'model_governance', 'data_steward'] },
-      { id: 'ews-risk-monitoring', title: 'Risk Monitoring', ruTitle: 'Мониторинг риска', roles: ['research_viewer', 'risk_analyst', 'model_governance', 'data_steward'] },
-      { id: 'ews-governance', title: 'Model Governance', ruTitle: 'Управление моделью', roles: ['model_governance', 'data_steward'] },
-      { id: 'ews-administration', title: 'Administration', ruTitle: 'Администрирование', roles: ['model_governance', 'platform_admin'] },
+      { id: 'ews-dashboard', title: 'EWS Dashboard', ruTitle: 'Панель раннего предупреждения', roles: screenRoles['ews-dashboard'] },
+      { id: 'ews-alert-queue', title: 'Alert Queue', ruTitle: 'Очередь сигналов', roles: screenRoles['ews-alert-queue'] },
+      { id: 'ews-alert-detail', title: 'Alert Detail', ruTitle: 'Карточка сигнала', roles: screenRoles['ews-alert-detail'] },
+      { id: 'ews-risk-monitoring', title: 'Risk Monitoring', ruTitle: 'Мониторинг риска', roles: screenRoles['ews-risk-monitoring'] },
+      { id: 'ews-governance', title: 'Model Governance', ruTitle: 'Управление моделью', roles: screenRoles['ews-governance'] },
+      { id: 'ews-administration', title: 'Administration', ruTitle: 'Администрирование', roles: screenRoles['ews-administration'] },
     ],
   },
 ];
+import { screenRoles } from './accessPolicy.js';

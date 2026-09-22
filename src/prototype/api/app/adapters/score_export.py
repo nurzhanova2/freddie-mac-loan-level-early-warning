@@ -4,13 +4,7 @@ import os
 from pathlib import Path
 
 from ..seed import ALERTS as SYNTHETIC_ALERTS
-
-ALLOWED_FIELDS = {
-    'alert_id', 'loan_reference', 'cohort', 'reporting_month', 'target',
-    'risk_score', 'trigger_threshold', 'tier', 'top_shap_driver',
-    'top_shap_contribution', 'review_status', 'expert_decision',
-}
-FORBIDDEN_MARKERS = {'loan_id', 'raw_path', 'feature_vector', 'training_sample', 'servicing_history'}
+from ..alert_contract import is_valid_export_columns
 
 
 def load_approved_alert_export() -> tuple[list[dict], str]:
@@ -25,11 +19,8 @@ def load_approved_alert_export() -> tuple[list[dict], str]:
     with candidate.open(newline='', encoding='utf-8') as handle:
         reader = csv.DictReader(handle)
         columns = set(reader.fieldnames or [])
-        if not ALLOWED_FIELDS.issuperset(columns) or columns.intersection(FORBIDDEN_MARKERS):
+        if not is_valid_export_columns(columns):
             raise ValueError('Approved export contains a forbidden or unsupported field')
-        required = ALLOWED_FIELDS - {'expert_decision'}
-        if not required.issubset(columns):
-            raise ValueError('Approved export is missing required alert fields')
         rows = []
         for row in reader:
             rows.append({

@@ -5,6 +5,7 @@ import unittest
 from pathlib import Path
 
 from src.prototype.api.app.adapters.score_export import load_approved_alert_export
+from src.prototype.api.app.alert_contract import BROWSER_ALERT_FIELDS
 
 
 class ApprovedScoreExportAdapterTests(unittest.TestCase):
@@ -40,3 +41,8 @@ class ApprovedScoreExportAdapterTests(unittest.TestCase):
         os.environ['SUPTECH_APPROVED_ALERT_EXPORT'] = str(path)
         with self.assertRaises(ValueError):
             load_approved_alert_export()
+
+    def test_browser_contract_excludes_raw_source_identifiers(self):
+        self.assertNotIn('loan_id', BROWSER_ALERT_FIELDS)
+        self.assertNotIn('training_sample', BROWSER_ALERT_FIELDS)
+        self.assertIn('model_version', BROWSER_ALERT_FIELDS)

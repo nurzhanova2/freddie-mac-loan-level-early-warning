@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from .models import Alert, AuditEvent, DataVersion, ExpertReview, ModelRun, ModelVersion, User
 from .security import password_record
 from .adapters.score_export import load_approved_alert_export
+from .alert_contract import serialize_browser_alert
 
 
 def seed_demo_data(session: Session) -> None:
@@ -33,14 +34,7 @@ def serialize_alert(alert: Alert, session: Session) -> dict:
     model = session.get(ModelVersion, alert.model_version_id)
     data = session.get(DataVersion, alert.data_version_id)
     latest_review = session.scalar(select(ExpertReview).where(ExpertReview.alert_id == alert.id).order_by(ExpertReview.reviewed_at.desc()).limit(1))
-    return {
-        'alert_id': alert.alert_id, 'loan_reference': alert.loan_reference, 'cohort': alert.cohort,
-        'reporting_month': alert.reporting_month, 'target': alert.target, 'risk_score': alert.risk_score,
-        'trigger_threshold': alert.trigger_threshold, 'tier': alert.tier, 'top_shap_driver': alert.top_shap_driver,
-        'top_shap_contribution': alert.top_shap_contribution, 'review_status': alert.review_status,
-        'expert_decision': latest_review.decision if latest_review else None,
-        'model_version': model.version, 'data_version': data.version,
-    }
+    return serialize_browser_alert(alert, model, data, latest_review)
 
 
 def record_review(session: Session, alert: Alert, decision: str, comment: str | None, reviewer: User) -> ExpertReview:

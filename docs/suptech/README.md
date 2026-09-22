@@ -20,3 +20,5 @@ decision system.
 - `15_authentication_and_rbac.md` and `16_admin_api_and_role_governance.md`
   record local authentication, role-based access, user administration and the
   audit controls for access changes.
+- `17_architecture_refactoring.md` records the safe alert contract and the
+  frontend access-policy refactoring.

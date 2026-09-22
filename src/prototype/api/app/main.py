@@ -13,10 +13,9 @@ from .repository import record_review, seed_demo_data, serialize_alert
 from .schemas import LoginRequest, ReviewCreate, UserCreate, UserUpdate
 from .security import issue_token, password_record, require_roles, verify_password
 from .models import User
+from .alert_contract import BROWSER_ALERT_FIELDS
 
 API_VERSION = 'v1'
-ALLOWED_BROWSER_FIELDS = ['alert_id', 'loan_reference', 'reporting_month', 'cohort', 'target', 'risk_score', 'trigger_threshold', 'tier', 'top_shap_driver', 'top_shap_contribution', 'model_version', 'data_version', 'review_status', 'expert_decision']
-
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
@@ -107,7 +106,7 @@ def update_user(username: str, payload: UserUpdate, session: Session = Depends(g
 
 @app.get('/api/v1/contract')
 def contract(session: Session = Depends(get_session), _: User = Depends(require_roles('research_viewer', 'risk_analyst', 'model_governance', 'data_steward'))):
-    return envelope({'allowed_browser_fields': ALLOWED_BROWSER_FIELDS, 'forbidden_classes': ['raw_files', 'stable_loan_ids', 'full_feature_vectors', 'training_samples']}, session)
+    return envelope({'allowed_browser_fields': BROWSER_ALERT_FIELDS, 'forbidden_classes': ['raw_files', 'stable_loan_ids', 'full_feature_vectors', 'training_samples']}, session)
 
 
 @app.get('/api/v1/alerts')
