@@ -2,11 +2,10 @@
 
 ## 3.1. Temporal logic of prediction
 
-The analysis treats each loan-month as a prediction date. Predictors may use
-only information available at or before month *t*, whereas the outcome is
-realised in the subsequent three- or six-month window. This temporal ordering is
-the central condition for interpreting the exercise as early warning rather
-than retrospective classification; it is consistent with dynamic and survival
+Each loan-month defines a prediction date. Predictors use only information
+available at or before month *t*, whereas the outcome is realised in the
+subsequent three- or six-month window. This ordering distinguishes early warning
+from retrospective classification and is consistent with dynamic and survival
 approaches to credit risk [6], [52], [53].
 
 ## 3.2. Outcome definitions and censoring

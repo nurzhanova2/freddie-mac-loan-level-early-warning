@@ -2,15 +2,15 @@
 
 ## 4.1. Modelling rationale
 
-The empirical comparison uses logistic regression and XGBoost. Logistic
-regression provides a transparent reference against which the incremental value
-of nonlinear interactions can be assessed; this benchmark design follows the
-empirical comparison tradition in credit scoring [51]. XGBoost is included as
-a scalable gradient-boosting implementation [61] because the
-relationship between loan characteristics, payment status, and subsequent
-deterioration need not be linear. The study does not interpret superior
-predictive performance as evidence of a causal relationship between a feature
-and an outcome.
+The empirical comparison is centred on logistic regression and XGBoost.
+Logistic regression provides a transparent reference against which the
+incremental value of nonlinear interactions can be assessed; this benchmark
+design follows the empirical comparison tradition in credit scoring [51].
+XGBoost is included as a scalable gradient-boosting implementation [61], since
+the relationship between loan characteristics, payment status, and subsequent
+deterioration need not be linear. Superior predictive performance is not
+interpreted as evidence of a causal relationship between a feature and an
+outcome.
 
 ## 4.2. Temporal validation design
 
@@ -61,7 +61,36 @@ only, and final assessment uses the out-of-time period only. Separate
 estimation and calibration of probabilities are important because good ranking
 alone does not guarantee a valid probability interpretation [63].
 
-## 4.5. Empirical model results
+Relative to the full pooled Q1+Q3 panel, the actual training samples represent
+approximately 0.270% for formal adverse status and 0.265% for early
+deterioration. These figures describe only a volume ratio; they are not simple
+random-sampling fractions. The denominator includes every period of the full
+panel whereas the training data are confined to the training interval, and the
+case-control procedure intentionally enriches rare events. It would therefore
+be incorrect to describe the design as a random 0.27% sample. The design
+provides computational feasibility, reproducibility, and sufficient target
+events, while validation and out-of-time evaluation retain natural event rates.
+
+## 4.5. Protocol for training-size sensitivity analysis
+
+Increasing the training volume does not imply automatically retraining every
+candidate algorithm. After a leading model is selected by a pre-specified rule
+— PR-AUC first, then Brier score and ROC-AUC on the independent temporal period
+— the scale analysis will be conducted only for that model and separately for
+each outcome. For formal adverse status, XGBoost is the initial candidate
+because it provides the strongest combination of these metrics in the completed
+comparison.
+
+The future experiment will use several increasing deterministic case-control
+training samples formed only within the training period. All variants will keep
+the same temporal boundaries, validation set, and out-of-time test, and will
+be compared by ROC-AUC, PR-AUC, Brier score, trigger precision/recall, and lead
+time. Any sampling fraction in this analysis will be calculated relative to the
+eligible training-period population, rather than all 467,638,404 observations.
+Until executed, this procedure is a pre-specified validation plan, not an
+empirical result.
+
+## 4.6. Empirical model results
 
 The logistic benchmark obtains out-of-time ROC-AUC values of 0.8794 for formal
 adverse status and 0.7254 for early deterioration. Isotonic calibration reduces

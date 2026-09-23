@@ -116,7 +116,7 @@ credit denial, sanctions, or supervisory intervention.
 
 ## 6.6. Conclusion
 
-Within the stated empirical scope, the working hypothesis is supported: an
+Within the stated empirical scope, the working hypothesis receives support: an
 explainable loan-month model evaluated on future periods can generate early
 risk signals with measurable discrimination, calibrated probabilities, and
 limited lead time. The principal contribution is the reproducible integration

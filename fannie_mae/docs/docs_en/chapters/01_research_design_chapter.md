@@ -4,11 +4,10 @@
 
 Mortgage-credit deterioration may become observable in monthly servicing data
 before it reaches the 90+ days-past-due threshold used here as a formal adverse
-outcome. The research problem is therefore to distinguish, using only
-information available at a given reporting month, loan-month observations that
-require earlier expert attention. The study addresses this problem through an
-explainable loan-level predictive model for the U.S. single-family mortgage
-segment.
+outcome. The research problem is therefore to identify loan-month observations
+that warrant earlier expert attention using only information available at the
+reporting month. The study addresses this problem through an explainable
+loan-level predictive model for the U.S. single-family mortgage segment.
 
 ## 1.2. Aim, subject and working hypothesis
 
@@ -25,7 +24,7 @@ input variables; they do not identify causal mechanisms [54], [55].
 
 ## 1.3. Research design
 
-The analytical sequence links the research objective to a review process:
+The analytical sequence connects the research objective to a review process:
 
 `data → risk estimate → deterioration signal → explanation → alert tier → expert review`.
 

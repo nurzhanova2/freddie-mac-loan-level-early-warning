@@ -2,10 +2,10 @@
 
 ## 2.1. Data source and empirical scope
 
-The empirical basis is the Fannie Mae Single-Family Loan Performance Primary
-Dataset, distributed through the Data Dynamics platform [57]. It contains
-origination characteristics and subsequent monthly mortgage-performance
-records. The present study covers the `2006Q1`, `2008Q1`, `2012Q1`, `2016Q1`,
+The empirical basis of the study is the Fannie Mae Single-Family Loan
+Performance Primary Dataset, distributed through the Data Dynamics platform
+[57]. It contains origination characteristics and subsequent monthly
+mortgage-performance records. The present study covers the `2006Q1`, `2008Q1`, `2012Q1`, `2016Q1`,
 `2020Q1`, `2022Q1`, and `2024Q1` acquisition cohorts. The analysis is confined
 to the Primary Dataset; HARP, multifamily, and Freddie Mac data are not pooled
 because they require separate definitions and processing rules.

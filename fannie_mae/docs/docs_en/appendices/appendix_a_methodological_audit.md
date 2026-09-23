@@ -66,6 +66,20 @@ observations (420,588 events) for `formal_adverse_6m` and 1,240,046
 observations (396,152 events) for `early_deterioration_6m`. This is a separate
 extension experiment; it does not replace the v01 baseline results.
 
+Relative to the full Q1+Q3 panel of 467,638,404 observations, these volumes
+equal approximately 0.270% and 0.265%, respectively. These percentages do not
+denote simple random samples: the full panel is used as a common denominator,
+while train is restricted to the earlier temporal period and the case-control
+rule intentionally enriches rare outcome observations. Accordingly, the thesis
+reports the percentage together with the sampling design and does not interpret
+it as the share of randomly selected rows.
+
+A subsequent training-size sensitivity analysis is planned only for the leading
+model of each outcome. New sample sizes will be defined relative to the eligible
+training-period population; validation and out-of-time test data will remain
+fixed. Until performed, this is an additional validation plan rather than a
+reported empirical result.
+
 ## A.6. Model parameters, calibration, and trigger policy
 
 | Component | Fixed v01 specification |

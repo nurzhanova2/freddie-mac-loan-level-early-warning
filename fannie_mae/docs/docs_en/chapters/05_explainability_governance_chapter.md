@@ -3,10 +3,10 @@
 ## 5.1. Role of explanation
 
 For the leading nonlinear model, TreeSHAP is used at both global and local
-levels. Global importance summarises the variables on which the model relies
-across the evaluated sample, while local explanations decompose an individual
-alert score into feature contributions. These quantities describe the fitted
-model rather than causal effects of borrower or loan characteristics [54], [55].
+levels. Global importance shows the variables on which the model relies across
+the evaluated sample, while local explanations decompose an individual alert
+score into feature contributions. These quantities describe the fitted model,
+rather than causal effects of borrower or loan characteristics [54], [55].
 
 For formal adverse status, the most influential variables include original
 interest rate, current delinquency status, FICO, loan age, DTI, and LTV/CLTV.
