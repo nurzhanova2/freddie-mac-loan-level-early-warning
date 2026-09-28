@@ -63,6 +63,8 @@ class Alert(Base):
     top_shap_driver: Mapped[str] = mapped_column(String(120))
     top_shap_contribution: Mapped[float] = mapped_column(Float)
     review_status: Mapped[str] = mapped_column(String(30))
+    observed_outcome: Mapped[int | None] = mapped_column(Integer, nullable=True)
+    outcome_observed_at: Mapped[str | None] = mapped_column(String(10), nullable=True)
     model_version_id: Mapped[int] = mapped_column(ForeignKey('model_versions.id'))
     data_version_id: Mapped[int] = mapped_column(ForeignKey('data_versions.id'))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
@@ -75,6 +77,7 @@ class ExpertReview(Base):
     user_id: Mapped[int] = mapped_column(ForeignKey('users.id'))
     decision: Mapped[str] = mapped_column(String(80))
     comment: Mapped[str | None] = mapped_column(Text, nullable=True)
+    explanation_helpfulness: Mapped[int | None] = mapped_column(Integer, nullable=True)
     reviewed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now)
 
 

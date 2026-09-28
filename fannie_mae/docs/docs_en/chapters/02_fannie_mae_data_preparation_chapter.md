@@ -3,7 +3,7 @@
 ## 2.1. Data source and empirical scope
 
 The empirical basis is the Fannie Mae Single-Family Loan Performance Primary
-Dataset, distributed through the Data Dynamics platform [57]. It contains
+Dataset, distributed through the Data Dynamics platform [48]. It contains
 origination characteristics and subsequent monthly servicing records. The study
 covers the `2006Q1`, `2008Q1`, `2012Q1`, `2016Q1`, `2020Q1`, `2022Q1`, and
 `2024Q1` acquisition cohorts. The analysis is confined to the Primary Dataset;
@@ -82,7 +82,10 @@ and [comparative analysis](../19_q1_q3_comparative_analysis_execution_report.md)
 ## 2.6. Source traceability
 
 The official file layout and glossary are the primary basis for interpreting
-fields, codes, and format-version differences [57]. Academic work on temporal
+fields, codes, and format-version differences [48]. Academic work on temporal
 credit risk and explainability does not replace that specification; it informs
 the experimental design, temporal validation, and model-auditability
-requirements [6], [53], [55], [56].
+requirements [40], [39], [2], [46].
+
+The full lineage, separation of research and browser-approved layers, and the
+working glossary are provided in [Appendix B](../appendices/appendix_b_data_lineage_and_glossary.md).

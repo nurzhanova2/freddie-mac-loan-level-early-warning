@@ -1,0 +1,4 @@
+target,split,start,end,hash_threshold,rows,events,event_rate_pct,path
+early_deterioration_6m,train,2006-01-01,2016-12-01,100,609823,22739,3.728787,fannie_mae/data/horizon_sensitivity_v01/early_deterioration_6m_train_sample_v01.parquet
+early_deterioration_6m,validation,2017-01-01,2020-12-01,100,332238,10033,3.019823,fannie_mae/data/horizon_sensitivity_v01/early_deterioration_6m_validation_sample_v01.parquet
+early_deterioration_6m,out_of_time_test,2021-01-01,2025-03-01,100,578133,13456,2.327492,fannie_mae/data/horizon_sensitivity_v01/early_deterioration_6m_out_of_time_test_sample_v01.parquet

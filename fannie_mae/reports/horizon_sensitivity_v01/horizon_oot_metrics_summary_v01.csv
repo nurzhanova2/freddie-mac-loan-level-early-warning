@@ -1,0 +1,7 @@
+target,outcome_family,horizon_months,tier_for_comparison,oot_rows,oot_events,oot_event_rate_pct,roc_auc_raw,pr_auc_raw,roc_auc_calibrated,pr_auc_calibrated,brier_calibrated,alert_capacity_pct,alert_count,trigger_precision_pct,trigger_recall_pct,alerted_events_with_observed_event,mean_lead_time_months,median_lead_time_months
+early_deterioration_3m,early_deterioration,3,Amber,591382,7672,1.2973,0.726818,0.035236,0.726162,0.033941,0.012694,5.0,29569,5.00186,19.277894,1479,1.848546,2.0
+early_deterioration_6m,early_deterioration,6,Amber,578133,13456,2.327492,0.72669,0.062342,0.726215,0.060253,0.022392,5.0,28907,8.700315,18.690547,2515,3.082306,3.0
+early_deterioration_12m,early_deterioration,12,Amber,556463,23087,4.148883,0.717588,0.098336,0.717271,0.096262,0.038969,5.0,27823,13.629012,16.424828,3792,5.346783,5.0
+formal_adverse_3m,formal_adverse,3,Red,597228,1592,0.266565,0.938444,0.375315,0.938129,0.331448,0.001974,1.0,5972,20.361688,76.38191,1216,1.711349,2.0
+formal_adverse_6m,formal_adverse,6,Red,583577,2890,0.495222,0.871818,0.29384,0.87059,0.273703,0.00401,1.0,5836,25.222755,50.934256,1472,2.33356,2.0
+formal_adverse_12m,formal_adverse,12,Red,560900,5206,0.928151,0.846222,0.235022,0.845679,0.22288,0.00813,1.0,5609,29.75575,32.059163,1669,3.677651,2.0

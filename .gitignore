@@ -7,8 +7,17 @@ freddie_mac/src/__pycache__/
 fannie_mae/data/raw/
 fannie_mae/data/interim/
 fannie_mae/data/processed/
+fannie_mae/data/external/
 fannie_mae/data/model_samples_v01/
 fannie_mae/data/model_samples_v02_q1q3/
+fannie_mae/data/horizon_sensitivity_v01/
+!fannie_mae/data/horizon_sensitivity_v01/
+fannie_mae/data/horizon_sensitivity_v01/*
+!fannie_mae/data/horizon_sensitivity_v01/*_manifest_v01.csv
+fannie_mae/data/train_size_sensitivity_v01/
+!fannie_mae/data/train_size_sensitivity_v01/
+fannie_mae/data/train_size_sensitivity_v01/*
+!fannie_mae/data/train_size_sensitivity_v01/*_manifest_v01.csv
 fannie_mae/data/q3_control_samples_v01/
 fannie_mae/reports/*.json
 fannie_mae/reports/q3_fixed_models_v01/*alerts*.parquet
@@ -20,6 +29,7 @@ node_modules/
 dist/
 .vite/
 .env
+src/prototype/api/approved_exports/
 catboost_info/
 .tmp/
 !freddie_mac/data/manifests/

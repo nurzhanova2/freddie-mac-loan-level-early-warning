@@ -45,6 +45,13 @@ Codes XX and 99 are not events. Prepayment, maturity, and zero-balance
 termination are not labelled as default. The complete procedure is in the
 [Stages 7–9 report](../07_09_execution_report.md).
 
+The sensitivity analysis additionally constructs three-, six-, and twelve-
+month versions of both outcomes under the same risk-set and censoring rules.
+For a fair comparison, their common OOT interval ends in March 2025, the last
+month with a complete twelve-month future window. These versions do not replace
+the principal six-month outcomes or the Red/Amber policy; results are recorded
+in [the horizon-comparison report](../26_horizon_sensitivity_execution_report.md).
+
 ## A.5. Temporal split and actual training samples
 
 The v01 baseline uses January 2006–December 2016 for training, January
@@ -74,11 +81,11 @@ rule intentionally enriches rare outcome observations. Accordingly, the thesis
 reports the percentage together with the sampling design and does not interpret
 it as the share of randomly selected rows.
 
-A subsequent training-size sensitivity analysis is planned only for the leading
-model of each outcome. New sample sizes will be defined relative to the eligible
-training-period population; validation and out-of-time test data will remain
-fixed. Until performed, this is an additional validation plan rather than a
-reported empirical result.
+Training-size sensitivity analysis has been completed for XGBoost as the
+leading candidate for each outcome. Nested 1%, 5%, 10%, and 25% natural-rate
+samples were formed in the Q1 training period; validation remained unchanged,
+and OOT was used once to assess the already frozen models. Results and
+limitations are reported in the [Stages 5–7 report](../25_train_size_sensitivity_oot_execution_report.md).
 
 ## A.6. Model parameters, calibration, and trigger policy
 
@@ -86,6 +93,8 @@ reported empirical result.
 |---|---|
 | Logistic regression | `solver=saga`, `max_iter=120`, `C=1.0`, `random_state=42` |
 | XGBoost | 160 trees, depth 6, `learning_rate=0.08`, `min_child_weight=10`, `subsample=0.8`, `colsample_bytree=0.8`, `tree_method=hist`, `random_state=42` |
+| CatBoost (extended v02 comparison) | 180 iterations, depth 6, `learning_rate=0.08`, `Logloss`, `random_seed=42` |
+| LightGBM (extended v02 comparison) | 180 trees, depth 6, `learning_rate=0.08`, `min_child_samples=20`, `subsample=0.8`, `colsample_bytree=0.8`, `random_state=42` |
 | Calibration | isotonic regression fitted only on validation; OOT is not used to fit the calibrator |
 | Red alert | `formal_adverse_6m`, top-1% review capacity; OOT precision 24.29%, recall 50.09% |
 | Amber alert | `early_deterioration_6m`, top-5% review capacity; OOT precision 8.69%, recall 18.59% |
@@ -93,6 +102,12 @@ reported empirical result.
 The [versioned policy](../../../config/fannie_suptech_trigger_policy_v01.yml)
 explicitly prohibits autonomous supervisory or enforcement action. An alert
 only prioritises human review and is accompanied by a local explanation.
+
+Model parameters were defined *a priori* as regularised, computationally
+feasible baseline specifications. Grid/random search, Bayesian optimisation,
+and Optuna were not used, and the parameters are not claimed to be optimal for
+Fannie Mae. The decision makes comparison uniform but leaves validation-only
+hyperparameter tuning as subsequent work.
 
 ## A.7. Control artefacts
 
@@ -102,3 +117,6 @@ only prioritises human review and is accompanied by a local explanation.
 - [Q1/Q3 comparison](../../../reports/q1_q3_robustness_v01/02_matched_q1_q3_comparison.csv)
 - [Q1/Q3 SHAP stability: formal adverse](../../../reports/q3_shap_v01/formal_adverse_6m_q1_q3_shap_stability_v01.csv)
 - [Q1/Q3 SHAP stability: early deterioration](../../../reports/q3_shap_v01/early_deterioration_6m_q1_q3_shap_stability_v01.csv)
+- [Permutation importance: formal adverse](../../../reports/xai_extension_v01/formal_adverse_6m_validation_permutation_importance_v01.csv)
+- [Permutation importance: early deterioration](../../../reports/xai_extension_v01/early_deterioration_6m_validation_permutation_importance_v01.csv)
+- [Red/Amber cohort-group SHAP stability audit](../../../reports/xai_extension_v01/xai_alert_cohort_shap_audit_summary_v01.csv)

@@ -1,0 +1,59 @@
+version: fannie_train_size_sensitivity_v01
+purpose: deterministic natural-rate training-size sensitivity analysis for the leading XGBoost model
+
+scope:
+  provider: Fannie Mae Primary Dataset
+  cohorts:
+    - 2006Q1
+    - 2008Q1
+    - 2012Q1
+    - 2016Q1
+    - 2020Q1
+    - 2022Q1
+    - 2024Q1
+  rationale: >
+    The v01 Q1 development contour is retained so that Q3 cohorts remain an
+    independent control population for transportability analysis.
+
+temporal_split:
+  train:
+    start: 2006-01-01
+    end: 2016-12-01
+  validation:
+    start: 2017-01-01
+    end: 2020-12-01
+  out_of_time_test:
+    start: 2021-01-01
+    end: 2025-09-01
+
+sampling:
+  method: deterministic hash of loan_identifier and monthly_reporting_period
+  modulus: 10000
+  shares_pct: [1, 5, 10, 25]
+  target_prevalence: natural_rate
+  seed_contract: "DuckDB hash(loan_identifier, monthly_reporting_period); fixed source ordering is not used"
+  nested_samples: true
+  eligibility: "non-null six-month target and reporting date inside the fixed train interval"
+
+model_contract:
+  model: xgboost
+  target_models: [formal_adverse_6m, early_deterioration_6m]
+  hyperparameters:
+    n_estimators: 160
+    max_depth: 6
+    learning_rate: 0.08
+    min_child_weight: 10
+    subsample: 0.8
+    colsample_bytree: 0.8
+    objective: binary:logistic
+    eval_metric: logloss
+    tree_method: hist
+    n_jobs: 4
+    random_state: 42
+  calibration: isotonic regression fitted on the fixed validation sample only
+
+evaluation_contract:
+  unchanged_validation: true
+  unchanged_out_of_time_test: true
+  metrics: [roc_auc, pr_auc, brier_score, trigger_precision, trigger_recall, lead_time]
+  status: protocol_fixed_before_training

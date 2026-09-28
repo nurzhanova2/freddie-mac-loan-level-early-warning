@@ -1,0 +1,17 @@
+{
+  "target": "early_deterioration_6m",
+  "source_period": "validation_2017_01_to_2020_12",
+  "validation_rows": 332693,
+  "permutation_sample_rows": 30000,
+  "permutation_repeats": 3,
+  "ale_bins": 10,
+  "top_numeric_features_for_ale": [
+    "borrower_credit_score_at_origination",
+    "remaining_months_to_maturity",
+    "original_interest_rate",
+    "remaining_months_to_legal_maturity"
+  ],
+  "shap_permutation_spearman_rank_correlation": 0.7482208255353238,
+  "cohort_comparison": "stress issuance (2008Q1, 2020Q1) versus reference issuance (2012Q1, 2016Q1)",
+  "restriction": "descriptive explanation audit; not a causal crisis-effect estimate and not an OOT model-selection exercise"
+}

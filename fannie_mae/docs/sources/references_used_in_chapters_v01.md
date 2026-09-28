@@ -1,10 +1,10 @@
-# Sources cited in dissertation chapters (working register v01)
+# Sources cited in dissertation chapters (historical working register v01)
 
-This register contains the sources currently cited in the dissertation chapters.
-Its numbering preserves the numbering of the supplied literature-review
-bibliography where applicable. It is a working reference register, not a claim
-that every item in the wider literature review has been cited in the empirical
-chapters.
+This historical register was used during drafting and contains a provisional,
+chapter-only numbering. It is retained for traceability only and must not be
+used for final citations. The Russian and English chapters have been
+synchronised to the single 54-entry bibliography documented in
+[`citation_synchronisation_v01.md`](citation_synchronisation_v01.md).
 
 [4] M. Ariza-Garzón, J. Arroyo, A. Caparrini, and M. Segovia-Vargas,
 “Explainability of a Machine Learning Granting Scoring Model in Peer-to-Peer

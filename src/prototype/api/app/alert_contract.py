@@ -3,9 +3,10 @@
 APPROVED_EXPORT_FIELDS = frozenset({
     'alert_id', 'loan_reference', 'cohort', 'reporting_month', 'target',
     'risk_score', 'trigger_threshold', 'tier', 'top_shap_driver',
-    'top_shap_contribution', 'review_status', 'expert_decision',
+    'top_shap_contribution', 'review_status', 'observed_outcome',
+    'outcome_observed_at', 'expert_decision',
 })
-OPTIONAL_EXPORT_FIELDS = frozenset({'expert_decision'})
+OPTIONAL_EXPORT_FIELDS = frozenset({'expert_decision', 'observed_outcome', 'outcome_observed_at'})
 REQUIRED_EXPORT_FIELDS = APPROVED_EXPORT_FIELDS - OPTIONAL_EXPORT_FIELDS
 FORBIDDEN_EXPORT_MARKERS = frozenset({
     'loan_id', 'raw_path', 'feature_vector', 'training_sample',
@@ -18,6 +19,7 @@ BROWSER_ALERT_FIELDS = (
     'alert_id', 'loan_reference', 'cohort', 'reporting_month', 'target',
     'risk_score', 'trigger_threshold', 'tier', 'top_shap_driver',
     'top_shap_contribution', 'review_status', 'expert_decision',
+    'observed_outcome', 'outcome_observed_at',
     'model_version', 'data_version',
 )
 
@@ -46,6 +48,8 @@ def serialize_browser_alert(alert, model, data, latest_review) -> dict:
         'top_shap_contribution': alert.top_shap_contribution,
         'review_status': alert.review_status,
         'expert_decision': latest_review.decision if latest_review else None,
+        'observed_outcome': alert.observed_outcome,
+        'outcome_observed_at': alert.outcome_observed_at,
         'model_version': model.version,
         'data_version': data.version,
     }

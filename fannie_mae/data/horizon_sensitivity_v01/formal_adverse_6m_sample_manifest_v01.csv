@@ -1,0 +1,4 @@
+target,split,start,end,hash_threshold,rows,events,event_rate_pct,path
+formal_adverse_6m,train,2006-01-01,2016-12-01,100,622812,7527,1.208551,fannie_mae/data/horizon_sensitivity_v01/formal_adverse_6m_train_sample_v01.parquet
+formal_adverse_6m,validation,2017-01-01,2020-12-01,100,337086,3784,1.122562,fannie_mae/data/horizon_sensitivity_v01/formal_adverse_6m_validation_sample_v01.parquet
+formal_adverse_6m,out_of_time_test,2021-01-01,2025-03-01,100,583577,2890,0.495222,fannie_mae/data/horizon_sensitivity_v01/formal_adverse_6m_out_of_time_test_sample_v01.parquet

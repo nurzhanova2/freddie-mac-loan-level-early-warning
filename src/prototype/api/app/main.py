@@ -8,7 +8,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from .db import SessionLocal, get_session
-from .models import Alert, AuditEvent, DataVersion, ModelVersion
+from .models import Alert, AuditEvent, DataVersion, ExpertReview, ModelVersion
 from .repository import record_review, seed_demo_data, serialize_alert
 from .schemas import LoginRequest, ReviewCreate, UserCreate, UserUpdate
 from .security import issue_token, password_record, require_roles, verify_password
@@ -135,8 +135,8 @@ def alert_explanation(alert_id: str, session: Session = Depends(get_session), _:
 @app.post('/api/v1/alerts/{alert_id}/reviews', status_code=201)
 def create_review(alert_id: str, payload: ReviewCreate, session: Session = Depends(get_session), user: User = Depends(require_roles('risk_analyst', 'model_governance'))):
     alert = get_alert_or_404(session, alert_id)
-    review = record_review(session, alert, payload.decision, payload.comment, user)
-    return envelope({'review_id': review.id, 'alert_id': alert.alert_id, 'decision': review.decision, 'comment': review.comment, 'reviewed_at': review.reviewed_at.isoformat(), 'review_status': alert.review_status}, session)
+    review = record_review(session, alert, payload.decision, payload.comment, payload.explanation_helpfulness, user)
+    return envelope({'review_id': review.id, 'alert_id': alert.alert_id, 'decision': review.decision, 'comment': review.comment, 'explanation_helpfulness': review.explanation_helpfulness, 'reviewed_at': review.reviewed_at.isoformat(), 'review_status': alert.review_status}, session)
 
 
 @app.get('/api/v1/audit-events')
@@ -149,6 +149,29 @@ def audit_events(limit: int = Query(default=50, ge=1, le=100), session: Session 
 def overview_metrics(session: Session = Depends(get_session), _: User = Depends(require_roles('research_viewer', 'risk_analyst', 'model_governance', 'data_steward'))):
     count = lambda condition: session.scalar(select(func.count()).select_from(Alert).where(condition))
     return envelope({'alert_count': session.scalar(select(func.count()).select_from(Alert)), 'red_alert_count': count(Alert.tier == 'Red'), 'amber_alert_count': count(Alert.tier == 'Amber'), 'requires_review_count': count(Alert.review_status != 'Reviewed')}, session)
+
+
+@app.get('/api/v1/evaluation/summary')
+def evaluation_summary(session: Session = Depends(get_session), _: User = Depends(require_roles('research_viewer', 'risk_analyst', 'model_governance', 'data_steward'))):
+    """Operational-use metrics; no claim of a prospective user study is made."""
+    alerts = list(session.scalars(select(Alert)))
+    reviews = list(session.scalars(select(ExpertReview)))
+    reviewed_ids = {review.alert_id for review in reviews}
+    tiers = []
+    for tier in ('Red', 'Amber'):
+        subset = [alert for alert in alerts if alert.tier == tier]
+        observed = [alert for alert in subset if alert.observed_outcome is not None]
+        tiers.append({
+            'tier': tier,
+            'alerts': len(subset),
+            'reviewed_alerts': sum(alert.id in reviewed_ids for alert in subset),
+            'pending_alerts': sum(alert.review_status != 'Reviewed' for alert in subset),
+            'outcomes_observed': len(observed),
+            'confirmed_alerts': sum(alert.observed_outcome == 1 for alert in observed),
+            'confirmed_alert_rate': (sum(alert.observed_outcome == 1 for alert in observed) / len(observed)) if observed else None,
+        })
+    ratings = [review.explanation_helpfulness for review in reviews if review.explanation_helpfulness is not None]
+    return envelope({'tiers': tiers, 'review_actions': len(reviews), 'explanation_ratings_count': len(ratings), 'mean_explanation_helpfulness': (sum(ratings) / len(ratings)) if ratings else None, 'status': 'instrumented_for_user_evaluation_not_a_completed_user_study'}, session)
 
 
 @app.get('/api/v1/model-registry')

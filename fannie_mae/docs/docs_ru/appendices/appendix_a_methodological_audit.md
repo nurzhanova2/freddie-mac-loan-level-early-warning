@@ -47,6 +47,13 @@ Dataset. Официальный [file layout и glossary](../../sources/crt-file
 прекращение с нулевым балансом не маркируются как дефолт. Полная процедура
 содержится в [отчёте этапов 7–9](../07_09_execution_report.md).
 
+В sensitivity-анализе дополнительно построены 3-, 6- и 12-месячные версии
+обоих исходов с теми же правилами базы риска и цензурирования. Для их честного
+сопоставления общий OOT-интервал ограничен январём 2021 — мартом 2025 года,
+последним месяцем с полным 12-месячным будущим окном. Эти версии не заменяют
+основные шестимесячные исходы и Red/Amber policy; их результаты приведены в
+[отчёте сравнения горизонтов](../26_horizon_sensitivity_execution_report.md).
+
 ## А.5. Временное разделение и фактические обучающие выборки
 
 Базовая версия v01 использует обучение за январь 2006 — декабрь 2016 года,
@@ -76,11 +83,11 @@ train ограничен ранним временным периодом, а ca
 работы процент сопровождается описанием способа отбора и не интерпретируется
 как доля случайно отобранных строк.
 
-Последующий анализ чувствительности к размеру train планируется только для
-ведущей модели каждого исхода. Размеры новых подвыборок будут задаваться
-относительно доступного train-периода; validation и out-of-time тест останутся
-фиксированными. До исполнения это является планом дополнительной проверки, а
-не заявленным результатом.
+Анализ чувствительности к размеру train выполнен для XGBoost как ведущего
+кандидата каждого исхода. В Q1 train-периоде сформированы вложенные
+natural-rate подвыборки 1%, 5%, 10% и 25%; validation осталась неизменной,
+а OOT был использован однократно для оценки уже зафиксированных моделей.
+Результаты и ограничения приведены в [отчёте этапов 5–7](../25_train_size_sensitivity_oot_execution_report.md).
 
 ## А.6. Параметры моделей, калибровка и trigger policy
 
@@ -88,6 +95,8 @@ train ограничен ранним временным периодом, а ca
 |---|---|
 | Логистическая регрессия | `solver=saga`, `max_iter=120`, `C=1.0`, `random_state=42` |
 | XGBoost | 160 деревьев, глубина 6, `learning_rate=0.08`, `min_child_weight=10`, `subsample=0.8`, `colsample_bytree=0.8`, `tree_method=hist`, `random_state=42` |
+| CatBoost (расширенное сравнение v02) | 180 итераций, глубина 6, `learning_rate=0.08`, `Logloss`, `random_seed=42` |
+| LightGBM (расширенное сравнение v02) | 180 деревьев, глубина 6, `learning_rate=0.08`, `min_child_samples=20`, `subsample=0.8`, `colsample_bytree=0.8`, `random_state=42` |
 | Калибровка | isotonic regression, обученная только на validation; OOT не используется для подбора калибратора |
 | Red alert | `formal_adverse_6m`, top 1% мощности проверки; precision 24,29%, recall 50,09% на OOT |
 | Amber alert | `early_deterioration_6m`, top 5% мощности проверки; precision 8,69%, recall 18,59% на OOT |
@@ -97,6 +106,12 @@ train ограничен ранним временным периодом, а ca
 сигнал задаёт приоритет экспертной проверки и сопровождается локальным
 объяснением.
 
+Параметры моделей определены *a priori* как регуляризированные, вычислительно
+допустимые baseline-спецификации. Ни grid/random search, ни байесовская
+оптимизация, ни Optuna не применялись; параметры не заявляются как оптимальные
+для Fannie Mae. Это решение обеспечивает единообразие сравнения, но оставляет
+отдельный validation-only tuning задачей последующей работы.
+
 ## А.7. Контрольные артефакты
 
 - [Сводка временного разделения](../../../reports/splits/fannie_temporal_split_v01_summary.csv)
@@ -105,3 +120,6 @@ train ограничен ранним временным периодом, а ca
 - [Сравнение Q1 и Q3](../../../reports/q1_q3_robustness_v01/02_matched_q1_q3_comparison.csv)
 - [SHAP-устойчивость Q1/Q3: formal adverse](../../../reports/q3_shap_v01/formal_adverse_6m_q1_q3_shap_stability_v01.csv)
 - [SHAP-устойчивость Q1/Q3: раннее ухудшение](../../../reports/q3_shap_v01/early_deterioration_6m_q1_q3_shap_stability_v01.csv)
+- [Permutation importance: formal adverse](../../../reports/xai_extension_v01/formal_adverse_6m_validation_permutation_importance_v01.csv)
+- [Permutation importance: раннее ухудшение](../../../reports/xai_extension_v01/early_deterioration_6m_validation_permutation_importance_v01.csv)
+- [Аудит SHAP-устойчивости Red/Amber по когортным группам](../../../reports/xai_extension_v01/xai_alert_cohort_shap_audit_summary_v01.csv)

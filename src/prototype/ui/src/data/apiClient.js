@@ -11,6 +11,7 @@ async function request(path, options) {
 export const api = {
   login: (username, password) => request('/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) }),
   metrics: () => request('/metrics/overview'),
+  evaluation: () => request('/evaluation/summary'),
   alerts: (params = {}) => request(`/alerts?${new URLSearchParams(Object.entries(params).filter(([, value]) => value && value !== 'All'))}`),
   alert: (alertId) => request(`/alerts/${alertId}`),
   explanation: (alertId) => request(`/alerts/${alertId}/explanation`),

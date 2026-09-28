@@ -1,0 +1,5 @@
+target,tier,train_share_pct,oot_rows,oot_events,oot_event_rate_pct,roc_auc_raw,pr_auc_raw,roc_auc_calibrated,pr_auc_calibrated,brier_calibrated,alert_capacity_pct,alert_count,threshold_score,true_positives,false_positives,trigger_precision_pct,trigger_recall_pct,false_alerts_per_true_positive,alerted_events_with_observed_event,mean_lead_time_months,median_lead_time_months,min_lead_time_months,max_lead_time_months
+early_deterioration_6m,Amber,1,651914,15242,2.338038,0.727414,0.065016,0.727034,0.062742,0.022471,5.0,32596,0.08413793,2873,29723,8.813965,18.849232,10.345632,2873,3.020188,3.0,1,6
+early_deterioration_6m,Amber,5,651914,15242,2.338038,0.730062,0.064268,0.729704,0.062362,0.02257,5.0,32596,0.08336627,2754,29842,8.448889,18.068495,10.835875,2754,3.008715,3.0,1,6
+early_deterioration_6m,Amber,10,651914,15242,2.338038,0.73047,0.063962,0.730129,0.062291,0.022558,5.0,32596,0.08643458,2751,29845,8.439686,18.048812,10.848782,2751,3.017448,3.0,1,6
+early_deterioration_6m,Amber,25,651914,15242,2.338038,0.73087,0.064193,0.730335,0.062079,0.022545,5.0,32596,0.08415207,2750,29846,8.436618,18.042252,10.853091,2750,2.999273,3.0,1,6

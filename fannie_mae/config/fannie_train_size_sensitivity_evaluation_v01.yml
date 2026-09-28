@@ -1,0 +1,38 @@
+version: fannie_train_size_sensitivity_evaluation_v01
+purpose: one-time out-of-time evaluation of frozen natural-rate XGBoost models
+
+scope:
+  experiment: fannie_train_size_sensitivity_v01
+  targets: [formal_adverse_6m, early_deterioration_6m]
+  train_shares_pct: [1, 5, 10, 25]
+  out_of_time_sample: model_samples_v01/*_out_of_time_test_sample_v01.parquet
+  out_of_time_period: 2021-01-01 to 2025-09-01
+
+frozen_before_oot:
+  model_hyperparameters: fannie_train_size_sensitivity_v01.yml:model_contract.hyperparameters
+  calibration: isotonic regression fitted on the unchanged 2017-01 to 2020-12 validation sample
+  no_refitting_on_oot: true
+  no_hyperparameter_selection_on_oot: true
+
+alert_capacity_policy:
+  formal_adverse_6m:
+    tier: Red
+    capacity_pct: 1
+  early_deterioration_6m:
+    tier: Amber
+    capacity_pct: 5
+  ranking: calibrated score, descending; loan identifier and reporting date resolve ties
+  interpretation: >
+    Capacity is a pre-specified review-budget rule applied to each scoring batch;
+    it is not an OOT-tuned probability threshold.
+
+metrics:
+  discrimination: [roc_auc_raw, pr_auc_raw, roc_auc_calibrated, pr_auc_calibrated]
+  calibration: [brier_calibrated]
+  operations: [alert_count, alert_capacity_pct, trigger_precision_pct, trigger_recall_pct, false_alerts_per_true_positive, mean_lead_time_months, median_lead_time_months]
+
+saturation_assessment:
+  purpose: descriptive interpretation only, not a second model-selection procedure
+  comparisons: consecutive train shares in ascending order
+  required_reporting: [absolute_metric_change, direction_of_change, alert_precision_change, lead_time_change]
+  external_confirmation: Q3 control cohorts or a later temporal holdout before operational deployment

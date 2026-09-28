@@ -1,0 +1,5 @@
+target,share_pct,hash_threshold,rows,events,event_rate_pct,path,exported
+early_deterioration_6m,1,100,609823,22739,3.728787,fannie_mae/data/train_size_sensitivity_v01/early_deterioration_6m_train_natural_01pct_v01.parquet,True
+early_deterioration_6m,5,500,3052708,114100,3.737665,fannie_mae/data/train_size_sensitivity_v01/early_deterioration_6m_train_natural_05pct_v01.parquet,True
+early_deterioration_6m,10,1000,6104158,228859,3.749231,fannie_mae/data/train_size_sensitivity_v01/early_deterioration_6m_train_natural_10pct_v01.parquet,True
+early_deterioration_6m,25,2500,15251786,570771,3.742322,fannie_mae/data/train_size_sensitivity_v01/early_deterioration_6m_train_natural_25pct_v01.parquet,True

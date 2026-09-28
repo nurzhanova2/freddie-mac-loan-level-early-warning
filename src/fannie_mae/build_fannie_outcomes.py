@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Construct leakage-safe 3- and 6-month Fannie Mae outcome labels."""
+"""Construct leakage-safe 3-, 6-, and 12-month Fannie Mae outcome labels."""
 
 from __future__ import annotations
 
@@ -60,14 +60,19 @@ def main() -> None:
         SELECT *,
             COUNT(*) OVER w3 AS future_month_count_3m,
             COUNT(*) OVER w6 AS future_month_count_6m,
+            COUNT(*) OVER w12 AS future_month_count_12m,
             COALESCE(MAX(CASE WHEN delinquency_bucket BETWEEN 3 AND 98 THEN 1 ELSE 0 END) OVER w3, 0) AS adverse_3m,
             COALESCE(MAX(CASE WHEN delinquency_bucket BETWEEN 3 AND 98 THEN 1 ELSE 0 END) OVER w6, 0) AS adverse_6m,
+            COALESCE(MAX(CASE WHEN delinquency_bucket BETWEEN 3 AND 98 THEN 1 ELSE 0 END) OVER w12, 0) AS adverse_12m,
             COALESCE(MAX(CASE WHEN delinquency_bucket BETWEEN 1 AND 98 THEN 1 ELSE 0 END) OVER w3, 0) AS deterioration_3m,
             COALESCE(MAX(CASE WHEN delinquency_bucket BETWEEN 1 AND 98 THEN 1 ELSE 0 END) OVER w6, 0) AS deterioration_6m,
+            COALESCE(MAX(CASE WHEN delinquency_bucket BETWEEN 1 AND 98 THEN 1 ELSE 0 END) OVER w12, 0) AS deterioration_12m,
             COALESCE(MAX(CASE WHEN delinquency_bucket IS NULL THEN 1 ELSE 0 END) OVER w3, 0) AS unknown_3m,
             COALESCE(MAX(CASE WHEN delinquency_bucket IS NULL THEN 1 ELSE 0 END) OVER w6, 0) AS unknown_6m,
+            COALESCE(MAX(CASE WHEN delinquency_bucket IS NULL THEN 1 ELSE 0 END) OVER w12, 0) AS unknown_12m,
             COALESCE(MAX(termination_now) OVER w3, 0) AS termination_3m,
-            COALESCE(MAX(termination_now) OVER w6, 0) AS termination_6m
+            COALESCE(MAX(termination_now) OVER w6, 0) AS termination_6m,
+            COALESCE(MAX(termination_now) OVER w12, 0) AS termination_12m
         FROM classified
         WINDOW
             w3 AS (
@@ -77,6 +82,10 @@ def main() -> None:
             w6 AS (
                 PARTITION BY loan_identifier ORDER BY monthly_reporting_period
                 RANGE BETWEEN INTERVAL 1 MONTH FOLLOWING AND INTERVAL 6 MONTH FOLLOWING
+            ),
+            w12 AS (
+                PARTITION BY loan_identifier ORDER BY monthly_reporting_period
+                RANGE BETWEEN INTERVAL 1 MONTH FOLLOWING AND INTERVAL 12 MONTH FOLLOWING
             )
     )
     SELECT
@@ -114,6 +123,20 @@ def main() -> None:
             ELSE 'observed_no_event'
         END AS formal_adverse_6m_status,
         CASE
+            WHEN termination_now = 1 OR delinquency_bucket IS NULL OR delinquency_bucket NOT BETWEEN 0 AND 2 THEN NULL
+            WHEN adverse_12m = 1 THEN 1
+            WHEN termination_12m = 1 OR unknown_12m = 1 OR future_month_count_12m < 12 THEN NULL
+            ELSE 0
+        END AS formal_adverse_12m,
+        CASE
+            WHEN termination_now = 1 OR delinquency_bucket IS NULL OR delinquency_bucket NOT BETWEEN 0 AND 2 THEN 'not_at_risk_at_t'
+            WHEN adverse_12m = 1 THEN 'event_90plus_dpd'
+            WHEN termination_12m = 1 THEN 'censored_termination'
+            WHEN unknown_12m = 1 THEN 'censored_unknown_status'
+            WHEN future_month_count_12m < 12 THEN 'censored_incomplete_followup'
+            ELSE 'observed_no_event'
+        END AS formal_adverse_12m_status,
+        CASE
             WHEN termination_now = 1 OR delinquency_bucket IS NULL OR delinquency_bucket != 0 THEN NULL
             WHEN deterioration_3m = 1 THEN 1
             WHEN termination_3m = 1 OR unknown_3m = 1 OR future_month_count_3m < 3 THEN NULL
@@ -141,6 +164,20 @@ def main() -> None:
             WHEN future_month_count_6m < 6 THEN 'censored_incomplete_followup'
             ELSE 'observed_no_event'
         END AS early_deterioration_6m_status
+        ,CASE
+            WHEN termination_now = 1 OR delinquency_bucket IS NULL OR delinquency_bucket != 0 THEN NULL
+            WHEN deterioration_12m = 1 THEN 1
+            WHEN termination_12m = 1 OR unknown_12m = 1 OR future_month_count_12m < 12 THEN NULL
+            ELSE 0
+        END AS early_deterioration_12m,
+        CASE
+            WHEN termination_now = 1 OR delinquency_bucket IS NULL OR delinquency_bucket != 0 THEN 'not_at_risk_at_t'
+            WHEN deterioration_12m = 1 THEN 'event_30plus_dpd'
+            WHEN termination_12m = 1 THEN 'censored_termination'
+            WHEN unknown_12m = 1 THEN 'censored_unknown_status'
+            WHEN future_month_count_12m < 12 THEN 'censored_incomplete_followup'
+            ELSE 'observed_no_event'
+        END AS early_deterioration_12m_status
     FROM windows
     """.format(panel=panel, events=events)
 
@@ -149,8 +186,10 @@ def main() -> None:
     label_pairs = [
         ("formal_adverse_3m", "formal_adverse_3m_status"),
         ("formal_adverse_6m", "formal_adverse_6m_status"),
+        ("formal_adverse_12m", "formal_adverse_12m_status"),
         ("early_deterioration_3m", "early_deterioration_3m_status"),
         ("early_deterioration_6m", "early_deterioration_6m_status"),
+        ("early_deterioration_12m", "early_deterioration_12m_status"),
     ]
     for label, status in label_pairs:
         aggregate = con.execute(
@@ -168,7 +207,7 @@ def main() -> None:
             "status_counts": {key: value for key, value in reasons},
         }
     report = {
-        "version": "fannie_outcome_v01",
+        "version": "fannie_outcome_horizon_v02",
         "panel_source": args.panel.as_posix(),
         "event_metadata_source": args.events.as_posix(),
         "rows_written": summaries["formal_adverse_3m"]["all_rows"],

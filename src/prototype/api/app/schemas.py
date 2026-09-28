@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field
 class ReviewCreate(BaseModel):
     decision: str = Field(min_length=2, max_length=80)
     comment: str | None = Field(default=None, max_length=2000)
+    explanation_helpfulness: int | None = Field(default=None, ge=1, le=5)
 
 
 class LoginRequest(BaseModel):

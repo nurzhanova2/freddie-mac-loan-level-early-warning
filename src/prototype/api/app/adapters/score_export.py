@@ -28,5 +28,7 @@ def load_approved_alert_export() -> tuple[list[dict], str]:
                 'risk_score': float(row['risk_score']),
                 'trigger_threshold': float(row['trigger_threshold']),
                 'top_shap_contribution': float(row['top_shap_contribution']),
+                'observed_outcome': int(row['observed_outcome']) if row.get('observed_outcome') not in (None, '') else None,
+                'outcome_observed_at': row.get('outcome_observed_at') or None,
             })
     return rows, 'approved_research_export'

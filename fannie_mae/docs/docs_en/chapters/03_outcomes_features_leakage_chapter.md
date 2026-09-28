@@ -6,7 +6,7 @@ Each loan-month defines a prediction date. Predictors use only information
 available at or before month *t*, whereas the outcome is realised in the
 following three- or six-month window. This ordering distinguishes early warning
 from retrospective classification and is consistent with dynamic and survival
-approaches to credit risk [6], [52], [53].
+approaches to credit risk [40], [38], [39].
 
 ## 3.2. Outcome definitions and censoring
 
@@ -17,7 +17,7 @@ past due. Codes XX and 99 are not events. Prepayment, maturity, and zero-balance
 termination are not recoded as default. When the future window is incomplete or
 the future status is unobserved, the observation is censored rather than
 labelled as a non-event. Status and code treatment follows the official Fannie
-Mae specification [57].
+Mae specification [48].
 
 ## 3.3. Predictor admissibility
 
@@ -28,7 +28,7 @@ documents treatment of all 113 source fields. Zero Balance Code, Zero Balance
 Effective Date, foreclosure/disposition fields, and other post-event variables
 are excluded because they may reveal information produced after the prediction
 date. The exclusion is therefore auditable and consistent with requirements for
-temporally admissible credit-modelling data [55], [56].
+temporally admissible credit-modelling data [2], [46].
 
 ## 3.4. Label construction and descriptive evidence
 

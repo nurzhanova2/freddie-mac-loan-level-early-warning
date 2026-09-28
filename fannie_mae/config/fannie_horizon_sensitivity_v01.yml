@@ -1,0 +1,32 @@
+version: fannie_horizon_sensitivity_v01
+purpose: direct comparison of 3-, 6-, and 12-month early-warning horizons
+
+scope:
+  provider: Fannie Mae Primary Dataset
+  cohorts: [2006Q1, 2008Q1, 2012Q1, 2016Q1, 2020Q1, 2022Q1, 2024Q1]
+  outcomes: [formal_adverse, early_deterioration]
+  horizons_months: [3, 6, 12]
+
+temporal_protocol:
+  train: 2006-01-01 to 2016-12-01
+  validation: 2017-01-01 to 2020-12-01
+  common_oot: 2021-01-01 to 2025-03-01
+  rationale: >
+    The common OOT end date preserves a complete 12-month future window in
+    data observed through 2026-03 and prevents comparisons across horizons
+    from using different test periods.
+
+training:
+  sample: deterministic 1% natural-rate hash sample of eligible train records
+  model: XGBoost with the pre-specified v01 baseline hyperparameters
+  calibration: isotonic regression fitted only on the fixed validation sample
+  no_hyperparameter_tuning: true
+
+evaluation:
+  one_time_common_oot_evaluation: true
+  formal_adverse_6m: {tier: Red, capacity_pct: 1}
+  early_deterioration_6m: {tier: Amber, capacity_pct: 5}
+  note: >
+    The 3- and 12-month models are evaluated for discrimination and
+    calibration; operational tier selection is retained for the 6-month
+    production-oriented horizon unless separately governed.

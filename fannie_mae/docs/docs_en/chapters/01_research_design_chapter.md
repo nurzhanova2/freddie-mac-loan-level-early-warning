@@ -14,14 +14,14 @@ predictive model for the U.S. single-family mortgage segment.
 The aim is to develop and evaluate a reproducible procedure for estimating the
 risk of subsequent mortgage-credit deterioration. This formulation follows
 dynamic credit-scoring research, in which risk changes over time rather than
-being treated as an immutable loan attribute [6], [52], [53]. The subject of
+being treated as an immutable loan attribute [40], [38], [39]. The subject of
 the study is the relationship between information available at the observation
 date and a future six-month deterioration outcome.
 
 The working hypothesis is that a model evaluated on later periods can provide
 informative early-warning signals. Explanation methods are used to audit the
 associations on which the model relies; they do not identify causal mechanisms
-[54], [55].
+[25], [2].
 
 ## 1.3. Research design
 
@@ -45,8 +45,8 @@ the recovery-period `2012Q3` cohort, the pandemic-period `2020Q3` cohort, the
 rising-rate `2022Q3` cohort, and the recent-market `2024Q3` cohort; other
 available Q3 cohorts retain temporal continuity. The comparison tests robustness
 to origination quarter, not a causal role of historical periods. The 2007–09
-crisis and subsequent recovery are documented in [58], the pandemic business-
-cycle turning point in [59], and the 2022 monetary-policy tightening in [60].
+crisis and subsequent recovery are documented in [49], the pandemic business-
+cycle turning point in [50], and the 2022 monetary-policy tightening in [51].
 
 ## 1.4. Dissertation structure
 

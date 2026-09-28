@@ -1,0 +1,33 @@
+version: fannie_macro_context_asof_v01
+purpose: >
+  Leakage-safe macroeconomic context for a separate future model-extension
+  experiment; not an input to the frozen v01/v02 models.
+point_in_time_rule: >
+  For reporting month t, retrieve each time series from ALFRED with
+  vintage_date=t and retain its latest observation on or before t. This avoids
+  using a value or revision published after the score date.
+sources:
+  alfred_base_url: https://alfred.stlouisfed.org/graph/alfredgraph.csv
+  national_interest_rate:
+    series_id: FEDFUNDS
+    definition: monthly effective federal funds rate
+    geography: United States
+  national_unemployment:
+    series_id: UNRATE
+    definition: monthly civilian unemployment rate
+    geography: United States
+  state_unemployment:
+    series_pattern: '{STATE}UR'
+    definition: monthly state unemployment rate
+    geography: property state
+  state_hpi:
+    series_pattern: '{STATE}STHPI'
+    definition: quarterly FHFA all-transactions house price index
+    geography: property state
+availability_controls:
+  - retain source series identifier, requested vintage date, observation date, and retrieval timestamp
+  - never forward-fill from an observation dated after the reporting month
+  - reject a join if the requested vintage date exceeds reporting month
+  - train only after a separate temporal leakage audit and locked comparison protocol
+revision_control: ALFRED vintage snapshot per reporting month
+excluded_from_current_models: true

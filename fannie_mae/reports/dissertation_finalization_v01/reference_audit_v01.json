@@ -1,0 +1,19 @@
+{
+  "generated_at": "2026-09-28T05:51:17.220Z",
+  "languages": {
+    "docs_ru": {
+      "chapter_reference_count": 31,
+      "registered_reference_count": 37,
+      "unregistered_chapter_references": [],
+      "missing_local_link_targets": [],
+      "checked_local_link_count": 51
+    },
+    "docs_en": {
+      "chapter_reference_count": 35,
+      "registered_reference_count": 37,
+      "unregistered_chapter_references": [],
+      "missing_local_link_targets": [],
+      "checked_local_link_count": 51
+    }
+  }
+}

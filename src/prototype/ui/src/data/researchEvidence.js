@@ -17,3 +17,28 @@ export const modelRows = [
   { model: 'Logistic Regression', target: 'Early deterioration', roc: '0.7254', pr: '0.0596', rate: '2.3380%' },
   { model: 'XGBoost', target: 'Early deterioration', roc: '0.7310', pr: '0.0663', rate: '2.3380%' },
 ];
+
+export const trainingSizeEvidence = {
+  ru: {
+    title: 'Чувствительность к объёму исторических данных',
+    caption: 'Независимая Q1 OOT-проверка natural-rate XGBoost; модель и калибратор были зафиксированы до оценки.',
+    rows: [
+      { target: 'Formal adverse', sample: '1% · 622 812', roc: '0,8788', brier: '0,004034', precision: '24,84%', conclusion: 'кандидат для ресурсного переобучения' },
+      { target: 'Formal adverse', sample: '25% · 15 576 478', roc: '0,8926', brier: '0,004146', precision: '24,03%', conclusion: 'ROC-AUC выше; operational-выигрыш неустойчив' },
+      { target: 'Early deterioration', sample: '1% · 609 823', roc: '0,7274', brier: '0,022471', precision: '8,81%', conclusion: 'кандидат для ресурсного переобучения' },
+      { target: 'Early deterioration', sample: '25% · 15 251 786', roc: '0,7309', brier: '0,022545', precision: '8,44%', conclusion: 'ROC-AUC выше; operational-выигрыш неустойчив' },
+    ],
+    note: 'В пределах проверенного Q1-контура 1% natural-rate train сохраняет конкурентное качество, лучший Brier score и максимальную точность фиксированных очередей. Это исследовательский ориентир, требующий подтверждения на Q3 и Freddie Mac; он не заменяет зарегистрированную модель и не меняет alert policy автоматически.',
+  },
+  en: {
+    title: 'Sensitivity to historical training volume',
+    caption: 'Independent Q1 OOT evaluation of natural-rate XGBoost; models and calibrators were frozen before assessment.',
+    rows: [
+      { target: 'Formal adverse', sample: '1% · 622,812', roc: '0.8788', brier: '0.004034', precision: '24.84%', conclusion: 'resource-efficient retraining candidate' },
+      { target: 'Formal adverse', sample: '25% · 15,576,478', roc: '0.8926', brier: '0.004146', precision: '24.03%', conclusion: 'higher ROC-AUC; no stable operational gain' },
+      { target: 'Early deterioration', sample: '1% · 609,823', roc: '0.7274', brier: '0.022471', precision: '8.81%', conclusion: 'resource-efficient retraining candidate' },
+      { target: 'Early deterioration', sample: '25% · 15,251,786', roc: '0.7309', brier: '0.022545', precision: '8.44%', conclusion: 'higher ROC-AUC; no stable operational gain' },
+    ],
+    note: 'Within the tested Q1 contour, 1% natural-rate training retains competitive quality, the best Brier score, and the highest fixed-queue precision. This is a research benchmark requiring confirmation on Q3 and Freddie Mac; it does not replace the registered model or automatically change alert policy.',
+  },
+};

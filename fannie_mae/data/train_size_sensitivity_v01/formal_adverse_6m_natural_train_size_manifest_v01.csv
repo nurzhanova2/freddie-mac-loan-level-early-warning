@@ -1,0 +1,5 @@
+target,share_pct,hash_threshold,rows,events,event_rate_pct,path,exported
+formal_adverse_6m,1,100,622812,7527,1.208551,fannie_mae/data/train_size_sensitivity_v01/formal_adverse_6m_train_natural_01pct_v01.parquet,True
+formal_adverse_6m,5,500,3117481,37882,1.215148,fannie_mae/data/train_size_sensitivity_v01/formal_adverse_6m_train_natural_05pct_v01.parquet,True
+formal_adverse_6m,10,1000,6233999,75918,1.217806,fannie_mae/data/train_size_sensitivity_v01/formal_adverse_6m_train_natural_10pct_v01.parquet,True
+formal_adverse_6m,25,2500,15576478,190119,1.220552,fannie_mae/data/train_size_sensitivity_v01/formal_adverse_6m_train_natural_25pct_v01.parquet,True

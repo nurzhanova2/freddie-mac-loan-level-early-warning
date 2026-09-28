@@ -19,7 +19,12 @@ def seed_demo_data(session: Session) -> None:
         session.flush()
         session.add(ModelRun(run_reference='demo-run-2025-09-12', model_version_id=model_version.id, data_version_id=data_version.id))
         for source in source_alerts:
-            session.add(Alert(**{key: source[key] for key in ('alert_id', 'loan_reference', 'cohort', 'reporting_month', 'target', 'risk_score', 'trigger_threshold', 'tier', 'top_shap_driver', 'top_shap_contribution', 'review_status')}, model_version_id=model_version.id, data_version_id=data_version.id))
+            session.add(Alert(**{key: source.get(key) for key in ('alert_id', 'loan_reference', 'cohort', 'reporting_month', 'target', 'risk_score', 'trigger_threshold', 'tier', 'top_shap_driver', 'top_shap_contribution', 'review_status', 'observed_outcome', 'outcome_observed_at')}, model_version_id=model_version.id, data_version_id=data_version.id))
+    data_version = session.scalar(select(DataVersion).limit(1))
+    model_version.validation_summary = 'Temporal OOT validation; Q1 natural-size sensitivity (1%, 5%, 10%, 25%) recorded separately; research prototype only.'
+    sensitivity_run = session.scalar(select(ModelRun).where(ModelRun.run_reference == 'train-size-sensitivity-oot-v01'))
+    if sensitivity_run is None:
+        session.add(ModelRun(run_reference='train-size-sensitivity-oot-v01', model_version_id=model_version.id, data_version_id=data_version.id))
     password = __import__('os').environ.get('SUPTECH_DEMO_PASSWORD', 'demo-password-change-me')
     for username, role in [('demo_research_viewer', 'research_viewer'), ('demo_risk_analyst', 'risk_analyst'), ('demo_model_governance', 'model_governance'), ('demo_data_steward', 'data_steward'), ('demo_platform_admin', 'platform_admin')]:
         user = session.scalar(select(User).where(User.username == username))
@@ -37,12 +42,12 @@ def serialize_alert(alert: Alert, session: Session) -> dict:
     return serialize_browser_alert(alert, model, data, latest_review)
 
 
-def record_review(session: Session, alert: Alert, decision: str, comment: str | None, reviewer: User) -> ExpertReview:
-    review = ExpertReview(alert_id=alert.id, user_id=reviewer.id, decision=decision, comment=comment)
+def record_review(session: Session, alert: Alert, decision: str, comment: str | None, explanation_helpfulness: int | None, reviewer: User) -> ExpertReview:
+    review = ExpertReview(alert_id=alert.id, user_id=reviewer.id, decision=decision, comment=comment, explanation_helpfulness=explanation_helpfulness)
     alert.review_status = 'Reviewed'
     session.add(review)
     session.flush()
-    session.add(AuditEvent(alert_id=alert.id, actor=reviewer.username, event_type='expert_review_recorded', payload_json=json.dumps({'decision': decision, 'comment': comment, 'model_version_id': alert.model_version_id, 'data_version_id': alert.data_version_id}, sort_keys=True)))
+    session.add(AuditEvent(alert_id=alert.id, actor=reviewer.username, event_type='expert_review_recorded', payload_json=json.dumps({'decision': decision, 'comment': comment, 'explanation_helpfulness': explanation_helpfulness, 'observed_outcome': alert.observed_outcome, 'outcome_observed_at': alert.outcome_observed_at, 'model_version_id': alert.model_version_id, 'data_version_id': alert.data_version_id}, sort_keys=True)))
     session.commit()
     session.refresh(review)
     return review
