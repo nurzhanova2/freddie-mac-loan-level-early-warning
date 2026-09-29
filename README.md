@@ -1,160 +1,211 @@
-# Explainable SupTech Early-Warning Research Prototype
+<div align="center">
 
-A research prototype for a dissertation on explainable artificial intelligence in credit risk. It presents Fannie Mae results as a controlled workflow:
+# Explainable SupTech Early-Warning System
 
-`data → score → alert → explanation → risk trigger → expert review`
+### A research prototype for early detection of borrower deterioration
 
-The prototype is not a production banking or supervisory system and does not make automated credit decisions.
+<p><a href="README.md"><strong>English</strong></a> · <a href="README_ru.md">Русский</a></p>
 
-## Quick Start
+<p>
+  <img src="https://img.shields.io/badge/status-research%20prototype-183153?style=flat-square" alt="Research prototype">
+  <img src="https://img.shields.io/badge/data-Fannie%20Mae%20Primary-168697?style=flat-square" alt="Fannie Mae Primary">
+  <img src="https://img.shields.io/badge/stack-React%20%2B%20FastAPI%20%2B%20PostgreSQL-2D7DD2?style=flat-square" alt="Technology stack">
+  <img src="https://img.shields.io/badge/use-research%20only-6B7280?style=flat-square" alt="Research use only">
+</p>
 
-Docker Desktop is required. From the repository root, run:
+<p>
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#research-results">Research results</a> ·
+  <a href="#suptech-workflow">Workflow</a> ·
+  <a href="#roles-and-access">Roles</a> ·
+  <a href="#security-boundaries">Security</a> ·
+  <a href="#repository-map">Repository map</a>
+</p>
+
+</div>
+
+> **Research boundary.** This dissertation prototype prioritises cases for
+> human review. It does not approve, decline, sanction, or otherwise automate
+> credit or supervisory decisions.
+
+```text
+data → risk score → alert → explanation → risk trigger → expert review
+```
+
+It operationalises explainable early warning at the loan-month level through
+time-aware validation, control of information leakage, calibrated probabilities,
+capacity-based Red/Amber alerts, local SHAP explanations, and an auditable
+review workflow.
+
+<p align="center">
+  <img src="docs/assets/screenshots/suptech/research-overview.png" alt="Research overview" width="48%">
+  <img src="docs/assets/screenshots/suptech/alert-queue.png" alt="Red and Amber alert queue" width="48%">
+</p>
+
+## What is included
+
+| Layer | Repository content |
+|---|---|
+| Research data workflow | Fannie Mae ingestion, quality checks, cohort panels, outcome construction, leakage register, manifests, and reproducible reports |
+| Models | Logistic Regression and XGBoost baselines; horizon, training-size, Q1/Q3, calibration, and explainability experiments |
+| Evidence | EDA, temporal validation, metrics, trigger policy, SHAP, permutation importance, ALE, figures, and bilingual chapters |
+| SupTech prototype | React interface, FastAPI, PostgreSQL audit trail, RBAC, administration, and Docker Compose |
+| Transferability boundary | Freddie Mac remains a separate workflow for future external validation after field harmonisation |
+
+## Quick start
+
+### Start the complete prototype
+
+Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and
+run from the repository root:
 
 ```bash
 docker compose up --build
 ```
 
-After startup, open:
+| Service | Address | Purpose |
+|---|---|---|
+| Web application | <http://localhost:5173> | Research evidence and SupTech workflow |
+| API documentation | <http://localhost:8000/docs> | FastAPI OpenAPI / Swagger documentation |
+| PostgreSQL | `localhost:5432` | Local users, reviews, and audit events |
 
-| Component         | Address                    | Purpose                                     |
-| ----------------- | -------------------------- | ------------------------------------------- |
-| Web interface     | http://localhost:5173      | Research dashboard and SupTech tool         |
-| API documentation | http://localhost:8000/docs | FastAPI Swagger interface                   |
-| PostgreSQL        | `localhost:5432`           | Local storage for users and the audit trail |
+```bash
+docker compose down
+```
 
-## Sign In
+### Sign in
 
-On the login page, select **RU / EN**, then enter a username and password. All demonstration accounts use the same password:
+The sign-in page supports **RU / EN**. All local demonstration accounts use:
 
 ```text
 demo-password-change-me
 ```
 
-| Role                   | Username                | Access and Validation Scenario                                                                                                                                               |
-| ---------------------- | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Research viewer        | `demo_research_viewer`  | View research results, the dashboard, alert queues, and alert details; creating expert reviews is not permitted.                                                             |
-| Risk analyst           | `demo_risk_analyst`     | All viewer capabilities plus saving expert decisions for alerts to the audit trail.                                                                                          |
-| Model governance       | `demo_model_governance` | Access to alerts, Model Governance, the registry, the audit trail, and creation and modification of local users.                                                             |
-| Data steward           | `demo_data_steward`     | Access to alerts, Model Governance, the registry, and the audit trail; no user management permissions.                                                                       |
-| Platform administrator | `demo_platform_admin`   | Access to research results and the administrative layer: creation of local users, role changes, and account deactivation. Access to alert data is intentionally not granted. |
+| Role | Demonstration login | Primary capability |
+|---|---|---|
+| Research viewer | `demo_research_viewer` | View research evidence, alerts, and explanations |
+| Risk analyst | `demo_risk_analyst` | Review alerts and save expert decisions |
+| Model governance | `demo_model_governance` | Review alerts, inspect the registry/audit trail, administer users |
+| Data steward | `demo_data_steward` | Inspect alerts, registry, and audit trail; no user administration |
+| Platform administrator | `demo_platform_admin` | Administer users and access research screens; alert data are intentionally unavailable |
 
-To switch roles, click **“Sign out”** on the right side of the header and sign in using a different account.
+Use **Sign out** in the header before testing another role.
 
-## How to Use the Prototype
+## Research results
 
-### 1. Research Evidence
+The primary v01 models use Fannie Mae Q1 cohorts, a time-based split, and a
+six-month prediction horizon. OOT was not used for model fitting, calibration,
+threshold selection, or hyperparameter selection.
 
-The **“Research Evidence”** section includes:
+| Outcome | Leading model | OOT ROC-AUC | OOT PR-AUC | Operational policy |
+|---|---|---:|---:|---|
+| `formal_adverse_6m` | XGBoost | **0.8943** | **0.2866** | Red: top 1%; 24.29% precision; 50.09% recall |
+| `early_deterioration_6m` | XGBoost | **0.7310** | **0.0663** | Amber: top 5%; 8.69% precision; 18.59% recall |
 
-* description of the Fannie Mae Q1 and Q3 cohorts;
-* temporal validation design;
-* model comparison and key metrics;
-* cross-cohort robustness and SHAP results;
-* research conclusions.
+<details>
+<summary><strong>Open the experimental evidence register</strong></summary>
+<br>
 
-### 2. Early-Warning System
+- 3-, 6-, and 12-month horizon comparison;
+- natural-rate training-size sensitivity at 1%, 5%, 10%, and 25%;
+- Q1/Q3 cohort comparison and explanation stability;
+- SHAP, permutation importance, and ALE diagnostics;
+- Logistic Regression, XGBoost, CatBoost, LightGBM, and pre-specified hybrid
+  comparison experiments in the Q1+Q3 research contour.
 
-In the **“Early-Warning System”** section:
+Detailed artifacts: [`fannie_mae/reports/`](fannie_mae/reports/) ·
+[`fannie_mae/docs/`](fannie_mae/docs/).
 
-1. Open **“Alert Queue”** and filter Red/Amber alerts or review status.
-2. Select an alert, then open **“Alert Details”**.
-3. Review the risk score, trigger threshold, model version, data version, and local SHAP explanation.
-4. Under the `risk_analyst` or `model_governance` role, save the expert decision:
-   **Priority follow-up**, **Watchlist**, **Monitoring**, or **No immediate action**.
-5. Under the `model_governance` or `data_steward` role, verify that the event appears in **Model Governance → Audit trail**.
+</details>
 
-### 3. Administration
+## SupTech workflow
 
-The **Administration** section is available to `model_governance` and `platform_admin`.
+```text
+Fannie Mae research data
+        │
+        ▼
+eligible as-of-date features ──► calibrated model score
+                                        │
+                                        ▼
+                             Red / Amber queue policy
+                                        │
+                                        ▼
+                         local SHAP explanation + metadata
+                                        │
+                                        ▼
+                    expert review + audit event + observed outcome
+```
 
-It allows users to create a local user account, assign or change a role, deactivate an account, and provide a reason for the change.
+1. Open **Alert Queue** and filter by Red/Amber tier or review status.
+2. Open **Alert Details** to inspect score, threshold, data/model version,
+   observation date, and local SHAP explanation.
+3. Under `risk_analyst` or `model_governance`, record a human decision.
+4. Under `model_governance` or `data_steward`, inspect the corresponding event
+   in **Model Governance → Audit trail**.
 
-Workflow safeguards:
+<p align="center">
+  <img src="docs/assets/screenshots/suptech/alert-detail.png" alt="Alert detail with local SHAP explanation" width="48%">
+  <img src="docs/assets/screenshots/suptech/risk-monitoring.png" alt="Risk monitoring view" width="48%">
+</p>
 
-* users cannot change their own role or active status;
-* access changes require a reason and confirmation;
-* the last active `platform_admin` cannot be demoted or deactivated;
-* a deactivated account cannot sign in again;
-* `user_created` and `user_access_updated` events are stored in `audit_events`.
+## Roles and access
 
-## Data and Security
+| Action | Viewer | Analyst | Governance | Steward | Admin |
+|---|:---:|:---:|:---:|:---:|:---:|
+| View research evidence | ✓ | ✓ | ✓ | ✓ | ✓ |
+| View alerts and explanations | ✓ | ✓ | ✓ | ✓ | — |
+| Save expert review | — | ✓ | ✓ | — | — |
+| Inspect registry and audit trail | — | — | ✓ | ✓ | — |
+| Create, change, deactivate users | — | — | ✓ | — | ✓ |
 
-By default, the API uses synthetic demonstration alerts. The browser interface receives only a safe alert DTO containing the score, tier, cohort, observation date, SHAP explanatory factor, and model/data versions.
+Safeguards: users cannot alter their own role or active status; every access
+change requires a reason and confirmation; the final active `platform_admin`
+cannot be demoted or deactivated.
 
-The browser **never receives** raw Fannie Mae files, persistent loan IDs, complete feature vectors, or training datasets. A real research data mart may only be connected through a pre-approved CSV export and a server-side adapter. 
+## Security boundaries
 
-## Development Verification
+| Protected element | Policy |
+|---|---|
+| Raw Fannie Mae files | Never served to the browser |
+| Loan IDs and full feature vectors | Never exposed through the alert API |
+| Browser data contract | Safe alert DTO only: pseudonymous reference, score, tier, versions, concise explanation, review state, and eligible observed outcome |
+| Research data connection | Server-side adapter reads pre-approved safe score exports only |
+| Automated action | Explicitly prohibited; the tool prioritises human review only |
+| Macro context | Point-in-time pipeline is future work; it is not an input to frozen v01/v02 models |
+
+## Development checks
 
 ```bash
 npm run test:ui
-
 python3 -m unittest tests.api.test_live_api tests.api.test_score_export_adapter
-
 npm run build
 ```
 
-## Repository Structure
+## Repository map
 
 ```text
 src/
-├── common/               # shared provider-neutral components
-├── fannie_mae/           # Fannie Mae research pipeline
+├── common/               # provider-neutral utilities
+├── fannie_mae/           # Fannie Mae research pipeline and reproducibility scripts
 ├── freddie_mac/          # Freddie Mac ingestion and preparation
-└── prototype/            # React UI, FastAPI, PostgreSQL audit trail
+└── prototype/            # React UI, FastAPI API, PostgreSQL audit trail
 
-fannie_mae/               # Fannie Mae data, models, reports, and documentation
-freddie_mac/              # Freddie Mac data, reports, and documentation
-docs/assets/screenshots/  # versioned screenshots used by project documentation
-tests/                    # API and frontend policy tests
+fannie_mae/               # configuration, restricted data layers, models, reports, bilingual documentation
+freddie_mac/              # isolated future external-validation workflow
+docs/assets/screenshots/  # versioned prototype screenshots
+tests/                    # API and UI policy tests
 ```
 
-The two providers are not combined into a single training table: the active model uses Fannie Mae, while Freddie Mac is retained as an independent data source for future transferability validation.
+## Documentation index
 
-## Interface screenshots
+| Document | Description |
+|---|---|
+| [Russian dissertation chapters](fannie_mae/docs/docs_ru/chapters/) | Academic text, appendices, conclusions, and defence materials |
+| [English dissertation chapters](fannie_mae/docs/docs_en/chapters/) | English chapter version and methodological appendices |
+| [Methodological audit](fannie_mae/docs/docs_ru/appendices/appendix_a_methodological_audit.md) | Data, cleaning, leakage control, outcomes, splits, models, calibration, and triggers |
+| [Data lineage and glossary](fannie_mae/docs/docs_ru/appendices/appendix_b_data_lineage_and_glossary.md) | Research layers, safe export, and terminology |
+| [Final evidence audit](fannie_mae/reports/dissertation_finalization_v01/reference_audit_v01.md) | Numbering and local-link audit |
 
-The screenshots below were captured from the local development prototype. Alert
-records are synthetic demonstrations; no raw Fannie Mae records are displayed.
+---
 
-### Access and research evidence
-
-![Sign-in screen with language selector](docs/assets/screenshots/suptech/login.png)
-
-*Figure 1. Local sign-in screen with RU/EN language selection.*
-
-![Research overview](docs/assets/screenshots/suptech/research-overview.png)
-
-*Figure 2. Research overview: research gap, objective, contribution and the controlled review workflow.*
-
-![Dataset overview](docs/assets/screenshots/suptech/dataset-overview.png)
-
-*Figure 3. Dataset overview: cohort coverage, volume and outcome-rate comparison for Q1 and Q3.*
-
-![Research design](docs/assets/screenshots/suptech/research-design.png)
-
-*Figure 4. Research design: temporal splits, outcome definitions and anti-leakage controls.*
-
-![Model performance](docs/assets/screenshots/suptech/model-performance.png)
-
-*Figure 5. Independent out-of-time model evaluation and trigger-policy results.*
-
-![Robustness across cohorts](docs/assets/screenshots/suptech/cohort-robustness.png)
-
-*Figure 6. Cross-cohort robustness: SHAP rank correlations and leading explanatory factors.*
-
-![Research conclusions](docs/assets/screenshots/suptech/research-conclusions.png)
-
-*Figure 7. Research conclusions and the boundary of practical use of the prototype.*
-
-### Early-warning workflow
-
-![Alert queue](docs/assets/screenshots/suptech/alert-queue.png)
-
-*Figure 8. Alert queue with tier, review-status and alert-ID filters.*
-
-![Alert detail](docs/assets/screenshots/suptech/alert-detail.png)
-
-*Figure 9. Alert-detail view with risk score, trigger threshold, local SHAP explanation and expert-review form.*
-
-![Risk monitoring](docs/assets/screenshots/suptech/risk-monitoring.png)
-
-*Figure 10. Risk-monitoring view: alert volumes, Red/Amber distribution and human-in-the-loop boundary.*
+<div align="center"><strong>Explainable AI for credit-risk early warning</strong><br>Controlled research workflow for transparent expert review.</div>
