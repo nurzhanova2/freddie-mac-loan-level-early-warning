@@ -1,0 +1,58 @@
+version: fannie_macro_enriched_experiment_v01
+status: protocol_locked_before_data_join
+purpose: >
+  Compare the frozen borrower-and-loan baseline with an additive, point-in-time
+  macroeconomic and regional feature set. This experiment does not alter v01,
+  v02, their reported results, or their production-research prototype export.
+scope:
+  provider: Fannie Mae Single-Family Loan Performance Data
+  outcomes:
+    - formal_adverse_6m
+    - early_deterioration_6m
+  sampling_population: model_samples_v01
+  train: 2006-01 through 2016-12
+  validation: 2017-01 through 2020-12
+  out_of_time_test: 2021-01 through 2025-09
+point_in_time_join:
+  join_keys: [monthly_reporting_period, property_state]
+  score_date: monthly_reporting_period
+  permitted_features:
+    - fedfunds_asof
+    - unemployment_us_asof
+    - state_unemployment_asof
+    - state_hpi_asof
+  provenance_columns_required:
+    - series_id
+    - requested_vintage_date
+    - source_observation_date
+    - retrieved_at_utc
+  prohibitions:
+    - no observation or revision available after score_date
+    - no value computed with future monthly records
+    - no out-of-time observations during feature or threshold selection
+    - no imputation from a future macro observation
+  territorial_coverage_rule: >
+    GU, PR, and VI are retained. If an ALFRED regional series is unavailable
+    for a territory at a score date, the value remains missing and an explicit
+    availability indicator is added; it must not be substituted with a state
+    average.
+models:
+  frozen_baseline: xgboost_v01
+  candidate_algorithms: [xgboost, lightgbm, catboost]
+  hyperparameter_selection:
+    split: validation
+    primary_metric: pr_auc
+    secondary_guards: [brier_score, roc_auc]
+    out_of_time_test_usage: final_evaluation_only
+  calibration:
+    split: validation
+    method_selection: validation_only
+comparison_outputs:
+  discrimination: [roc_auc, pr_auc]
+  probability_quality: [brier_score, calibration_curve]
+  alert_operation: [red_precision, red_recall, amber_precision, amber_recall, lead_time_months, alert_volume]
+execution_gates:
+  - complete macro-mart coverage and point-in-time audit
+  - freeze eligible feature list before model fitting
+  - retain the same splits and score-time policy for baseline and enriched runs
+  - log every training configuration, seed, data manifest, and model version

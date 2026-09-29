@@ -1,0 +1,49 @@
+{
+  "version": "tree_hyperparameter_selection_v01",
+  "target": "early_deterioration_6m",
+  "protocol": "train_and_validation_only",
+  "oot_file_opened": false,
+  "selection_metric": "pr_auc",
+  "selected": [
+    {
+      "target": "early_deterioration_6m",
+      "algorithm": "catboost",
+      "candidate_id": "fixed_baseline",
+      "train_rows": 1240046,
+      "train_events": 396152,
+      "validation_rows": 1022461,
+      "validation_events": 28089,
+      "parameters_json": "{\"depth\": 6, \"iterations\": 180, \"l2_leaf_reg\": 3.0, \"learning_rate\": 0.08}",
+      "roc_auc": 0.7542463284873193,
+      "pr_auc": 0.09718151283650338,
+      "brier_uncalibrated": 0.05748256477687183
+    },
+    {
+      "target": "early_deterioration_6m",
+      "algorithm": "lightgbm",
+      "candidate_id": "fixed_baseline",
+      "train_rows": 1240046,
+      "train_events": 396152,
+      "validation_rows": 1022461,
+      "validation_events": 28089,
+      "parameters_json": "{\"colsample_bytree\": 0.8, \"learning_rate\": 0.08, \"max_depth\": 6, \"min_child_samples\": 20, \"n_estimators\": 180, \"num_leaves\": 31, \"reg_lambda\": 0.0, \"subsample\": 0.8}",
+      "roc_auc": 0.7560377043268338,
+      "pr_auc": 0.09816031701629253,
+      "brier_uncalibrated": 0.05679837874873213
+    },
+    {
+      "target": "early_deterioration_6m",
+      "algorithm": "xgboost",
+      "candidate_id": "fixed_baseline",
+      "train_rows": 1240046,
+      "train_events": 396152,
+      "validation_rows": 1022461,
+      "validation_events": 28089,
+      "parameters_json": "{\"colsample_bytree\": 0.8, \"learning_rate\": 0.08, \"max_depth\": 6, \"min_child_weight\": 10, \"n_estimators\": 160, \"reg_lambda\": 1.0, \"subsample\": 0.8}",
+      "roc_auc": 0.7566449092620972,
+      "pr_auc": 0.09866817529221619,
+      "brier_uncalibrated": 0.057229917381803906
+    }
+  ],
+  "created_at_utc": "2026-09-29T07:51:29.247331+00:00"
+}

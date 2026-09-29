@@ -1,0 +1,43 @@
+{
+  "version": "tree_oot_governance_decision_v01",
+  "prototype_update": "no",
+  "active_model_policy": "retain_frozen_xgboost_v01_pending_separate_xai_and_export_audit",
+  "records": [
+    {
+      "target": "formal_adverse_6m",
+      "validation_selected_configuration": "lightgbm_medium_regularised",
+      "oot_governance_reference": "xgboost_fixed_baseline",
+      "decision": "retain_xgboost_fixed_baseline",
+      "decision_rule_passed": false,
+      "selected_oot_pr_auc_raw": 0.3065652207036276,
+      "reference_oot_pr_auc_raw": 0.3087188352064238,
+      "selected_brier_calibrated": 0.0036267318883247,
+      "reference_brier_calibrated": 0.0036179513613604,
+      "selected_trigger_precision_pct": 24.405170441546556,
+      "reference_trigger_precision_pct": 24.496682681308624,
+      "selected_mean_lead_time_months": 2.52261542067026,
+      "reference_mean_lead_time_months": 2.535138921316834,
+      "rationale": "Validation-selected LightGBM does not satisfy the pre-specified OOT update rule."
+    },
+    {
+      "target": "early_deterioration_6m",
+      "validation_selected_configuration": "xgboost_fixed_baseline",
+      "oot_governance_reference": "xgboost_fixed_baseline",
+      "decision": "retain_xgboost_fixed_baseline",
+      "decision_rule_passed": true,
+      "selected_oot_pr_auc_raw": 0.0705499096598876,
+      "reference_oot_pr_auc_raw": 0.0705499096598876,
+      "selected_brier_calibrated": 0.0204828030106686,
+      "reference_brier_calibrated": 0.0204828030106686,
+      "selected_trigger_precision_pct": 9.22458967196842,
+      "reference_trigger_precision_pct": 9.22458967196842,
+      "selected_mean_lead_time_months": 3.038038038038038,
+      "reference_mean_lead_time_months": 3.038038038038038,
+      "rationale": "Fixed XGBoost was selected before OOT. CatBoost OOT differences are recorded as an exploratory future candidate and do not justify post-test model selection.",
+      "catboost_oot_pr_auc_calibrated": 0.0690535938010855,
+      "catboost_brier_calibrated": 0.0204728190267809,
+      "catboost_trigger_precision_pct": 9.256908054202544,
+      "catboost_mean_lead_time_months": 3.0467581047381547
+    }
+  ]
+}

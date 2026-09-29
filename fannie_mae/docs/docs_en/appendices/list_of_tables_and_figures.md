@@ -18,6 +18,9 @@ Links point to reproducible project artefacts.
 | Table 4.3 | Probability-calibration comparison | [CSV](../../../reports/models/logistic_isotonic_calibration_v01_summary.csv) |
 | Table 4.4 | OOT-metric sensitivity to natural-rate training size | [CSV](../../../reports/train_size_sensitivity_v01/train_size_oot_metrics_summary_v01.csv) |
 | Table 4.5 | Common-OOT comparison of 3-, 6-, and 12-month horizons | [CSV](../../../reports/horizon_sensitivity_v01/horizon_oot_comparability_summary_v01.csv) |
+| Table 4.6 | Validation-only comparison of tree-model candidates | [CSV](../../../reports/tree_hyperparameter_selection_v01/tree_validation_candidate_comparison_v01.csv) |
+| Table 4.7 | Tree-model configurations selected on validation | [CSV](../../../reports/tree_hyperparameter_selection_v01/tree_validation_overall_selection_v01.csv) |
+| Table 4.8 | Calibrated tree-model OOT evaluation and registry decision | [CSV](../../../reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv) |
 | Table 5.1 | Global SHAP importance for formal adverse | [CSV](../../../reports/models/formal_adverse_6m_xgboost_shap_global_v01.csv) |
 | Table 5.2 | Formal-adverse validation permutation importance | [CSV](../../../reports/xai_extension_v01/formal_adverse_6m_validation_permutation_importance_v01.csv) |
 | Table 5.3 | Early-deterioration validation permutation importance | [CSV](../../../reports/xai_extension_v01/early_deterioration_6m_validation_permutation_importance_v01.csv) |
@@ -46,6 +49,8 @@ Links point to reproducible project artefacts.
 | Figure 4.7 | Early-deterioration OOT reliability across training sizes | [PNG](../../../reports/figures/train_size_sensitivity_v01/early_deterioration_6m_train_size_oot_calibration_v01.png) |
 | Figure 4.8 | Prevalence-adjusted formal-adverse OOT horizon comparison | [PNG](../../../reports/figures/horizon_sensitivity_v01/formal_adverse_horizon_oot_comparability_v01.png) |
 | Figure 4.9 | Prevalence-adjusted early-deterioration OOT horizon comparison | [PNG](../../../reports/figures/horizon_sensitivity_v01/early_deterioration_horizon_oot_comparability_v01.png) |
+| Figure 4.10 | Tree-model OOT reliability for formal adverse | [PNG](../../../reports/figures/tree_hyperparameter_selection_v01/formal_adverse_6m_oot_reliability_v01.png) |
+| Figure 4.11 | Tree-model OOT reliability for early deterioration | [PNG](../../../reports/figures/tree_hyperparameter_selection_v01/early_deterioration_6m_oot_reliability_v01.png) |
 | Figure 5.1 | Global SHAP importance for formal adverse | [PNG](../../../reports/figures/models/formal_adverse_6m_xgboost_shap_global_v01.png) |
 | Figure 5.2 | Q1/Q3 SHAP-factor comparison for formal adverse | [PNG](../../../reports/figures/q3_shap_v01/formal_adverse_6m_q1_q3_shap_comparison_v01.png) |
 | Figure 5.3 | Formal-adverse validation ALE profiles | [PNG](../../../reports/figures/xai_extension_v01/formal_adverse_6m_validation_ale_v01.png) |

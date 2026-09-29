@@ -21,10 +21,24 @@ def seed_demo_data(session: Session) -> None:
         for source in source_alerts:
             session.add(Alert(**{key: source.get(key) for key in ('alert_id', 'loan_reference', 'cohort', 'reporting_month', 'target', 'risk_score', 'trigger_threshold', 'tier', 'top_shap_driver', 'top_shap_contribution', 'review_status', 'observed_outcome', 'outcome_observed_at')}, model_version_id=model_version.id, data_version_id=data_version.id))
     data_version = session.scalar(select(DataVersion).limit(1))
-    model_version.validation_summary = 'Temporal OOT validation; Q1 natural-size sensitivity (1%, 5%, 10%, 25%) recorded separately; research prototype only.'
+    model_version.validation_summary = 'Temporal OOT validation; Q1 natural-size sensitivity and v02 Q1+Q3 tree-model OOT governance evaluation completed with no registry change; research prototype only.'
     sensitivity_run = session.scalar(select(ModelRun).where(ModelRun.run_reference == 'train-size-sensitivity-oot-v01'))
     if sensitivity_run is None:
         session.add(ModelRun(run_reference='train-size-sensitivity-oot-v01', model_version_id=model_version.id, data_version_id=data_version.id))
+    tree_oot_run = session.scalar(select(ModelRun).where(ModelRun.run_reference == 'tree-model-oot-governance-v01'))
+    if tree_oot_run is None:
+        session.add(ModelRun(run_reference='tree-model-oot-governance-v01', model_version_id=model_version.id, data_version_id=data_version.id))
+        session.add(AuditEvent(
+            alert_id=None,
+            actor='system_model_governance',
+            event_type='tree_model_oot_evaluation_completed',
+            payload_json=json.dumps({
+                'decision': 'no_registry_change',
+                'message': 'v02 Q1+Q3 tree-model evaluation completed; no registry change',
+                'active_model': 'calibrated_xgboost_v01',
+                'selection_protocol': '18 validation fits; isotonic calibration on validation; one locked OOT evaluation',
+            }, sort_keys=True),
+        ))
     password = __import__('os').environ.get('SUPTECH_DEMO_PASSWORD', 'demo-password-change-me')
     for username, role in [('demo_research_viewer', 'research_viewer'), ('demo_risk_analyst', 'risk_analyst'), ('demo_model_governance', 'model_governance'), ('demo_data_steward', 'data_steward'), ('demo_platform_admin', 'platform_admin')]:
         user = session.scalar(select(User).where(User.username == username))

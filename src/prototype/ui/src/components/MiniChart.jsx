@@ -1,4 +1,10 @@
-const colors = { navy: '#102b4e', turquoise: '#087e8b', amber: '#a85d00', red: '#b23a31', gray: '#8a8885' };
+const colors = {
+  navy: 'var(--color-signal-green)',
+  turquoise: 'var(--color-info)',
+  amber: 'var(--color-alert-amber)',
+  red: 'var(--color-alert-red)',
+  gray: 'var(--text-muted)',
+};
 function LineChart({ series, label }) {
   const max = Math.max(...series.flatMap((item) => item.values), 1);
   const points = (values) => values.map((value, i) => `${28 + i * 100.8},${174 - (value / max) * 140}`).join(' ');

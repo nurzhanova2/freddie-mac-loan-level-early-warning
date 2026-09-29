@@ -1,0 +1,61 @@
+version: fannie_tree_hyperparameter_selection_v01
+status: locked_before_fitting
+purpose: >
+  Reproducible validation-only comparison of fixed tree-model specifications
+  and a compact regularised candidate set on the extended Q1+Q3 dataset.
+data:
+  samples_dir: fannie_mae/data/model_samples_v02_q1q3
+  targets: [formal_adverse_6m, early_deterioration_6m]
+  train: 2006-01 through 2016-12
+  validation: 2017-01 through 2020-12
+  out_of_time_test: 2021-01 through 2025-09
+selection:
+  primary_metric: pr_auc
+  secondary_metrics: [roc_auc, brier_uncalibrated]
+  rule: >
+    Select the candidate with maximum validation PR-AUC. The OOT file is not
+    opened during fitting or selection. Calibration and final OOT evaluation
+    occur only after the selected configuration is frozen.
+  random_seed: 42
+  thread_limit: 2
+fixed_baseline_specifications:
+  xgboost:
+    n_estimators: 160
+    max_depth: 6
+    learning_rate: 0.08
+    min_child_weight: 10
+    subsample: 0.8
+    colsample_bytree: 0.8
+  catboost:
+    iterations: 180
+    depth: 6
+    learning_rate: 0.08
+  lightgbm:
+    n_estimators: 180
+    max_depth: 6
+    learning_rate: 0.08
+    min_child_samples: 20
+    subsample: 0.8
+    colsample_bytree: 0.8
+candidates:
+  xgboost:
+    - id: fixed_baseline
+      parameters: {n_estimators: 160, max_depth: 6, learning_rate: 0.08, min_child_weight: 10, subsample: 0.8, colsample_bytree: 0.8, reg_lambda: 1.0}
+    - id: shallow_regularised
+      parameters: {n_estimators: 260, max_depth: 4, learning_rate: 0.05, min_child_weight: 20, subsample: 0.85, colsample_bytree: 0.8, reg_lambda: 5.0}
+    - id: medium_regularised
+      parameters: {n_estimators: 240, max_depth: 5, learning_rate: 0.05, min_child_weight: 15, subsample: 0.85, colsample_bytree: 0.9, gamma: 0.1, reg_lambda: 5.0}
+  catboost:
+    - id: fixed_baseline
+      parameters: {iterations: 180, depth: 6, learning_rate: 0.08, l2_leaf_reg: 3.0}
+    - id: shallow_regularised
+      parameters: {iterations: 300, depth: 5, learning_rate: 0.05, l2_leaf_reg: 8.0, random_strength: 0.5}
+    - id: medium_regularised
+      parameters: {iterations: 260, depth: 6, learning_rate: 0.05, l2_leaf_reg: 10.0, random_strength: 1.0}
+  lightgbm:
+    - id: fixed_baseline
+      parameters: {n_estimators: 180, max_depth: 6, num_leaves: 31, learning_rate: 0.08, min_child_samples: 20, subsample: 0.8, colsample_bytree: 0.8, reg_lambda: 0.0}
+    - id: shallow_regularised
+      parameters: {n_estimators: 300, max_depth: 5, num_leaves: 15, learning_rate: 0.05, min_child_samples: 80, subsample: 0.85, colsample_bytree: 0.8, reg_lambda: 5.0}
+    - id: medium_regularised
+      parameters: {n_estimators: 260, max_depth: 6, num_leaves: 31, learning_rate: 0.05, min_child_samples: 100, subsample: 0.85, colsample_bytree: 0.9, reg_lambda: 10.0}

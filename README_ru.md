@@ -94,8 +94,8 @@ demo-password-change-me
 ## Научные результаты
 
 Основные модели v01 используют Q1-когорты Fannie Mae, временное разделение и
-шестимесячный горизонт. OOT не применялся для обучения, калибровки, выбора
-порога или гиперпараметров.
+шестимесячный горизонт. Для этого базового контура OOT не применялся для
+обучения, калибровки, выбора порога или гиперпараметров.
 
 | Исход | Ведущая модель | OOT ROC-AUC | OOT PR-AUC | Операционная policy |
 |---|---|---:|---:|---|
@@ -111,7 +111,10 @@ demo-password-change-me
 - сопоставление Q1/Q3 и устойчивость объяснений;
 - диагностики SHAP, permutation importance и ALE;
 - Logistic Regression, XGBoost, CatBoost, LightGBM и заранее определённые
-  hybrid experiments в Q1+Q3-контуре.
+  hybrid experiments в Q1+Q3-контуре;
+- завершённый v02 governance-эксперимент для tree-моделей Q1+Q3: 18 обучений
+  на validation, калибровка только на validation и однократная OOT-проверка.
+  Реестровая модель не изменена; см. [итоговую таблицу governance-решения](fannie_mae/reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv).
 
 Детальные артефакты: [`fannie_mae/reports/`](fannie_mae/reports/) ·
 [`fannie_mae/docs/`](fannie_mae/docs/).

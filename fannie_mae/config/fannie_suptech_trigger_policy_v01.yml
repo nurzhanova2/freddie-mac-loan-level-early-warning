@@ -37,3 +37,11 @@ prohibited_uses:
   - autonomous_supervisory_or_enforcement_action
   - causal_interpretation_of_model_explanations
   - inference_about_borrowers_outside_the_documented_mortgage_sample
+
+tree_model_oot_follow_up_v01:
+  status: completed_no_registry_change
+  result: >
+    Validation-selected LightGBM did not meet the pre-specified OOT update rule
+    for formal adverse; fixed XGBoost remains the active research-prototype
+    registry model for both six-month outcomes.
+  decision_artifact: fannie_mae/reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv

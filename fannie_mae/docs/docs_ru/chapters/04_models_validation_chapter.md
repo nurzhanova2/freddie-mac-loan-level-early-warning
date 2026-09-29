@@ -11,13 +11,15 @@ XGBoost включён как масштабируемая реализация 
 ухудшением не обязана быть линейной. Превосходство одной модели по метрикам не
 трактуется как доказательство причинной связи между признаком и исходом.
 
-Для обеспечения сопоставимости алгоритмов использованы заранее заданные
-регуляризированные спецификации с ограниченной вычислительной сложностью.
-Автоматизированный подбор гиперпараметров — grid search, random search,
-байесовская оптимизация или Optuna — не проводился. Следовательно, параметры
-не интерпретируются как оптимальные для Fannie Mae; они задают
-воспроизводимый baseline, одинаково применяемый к сопоставляемым выборкам.
-Ни validation-, ни OOT-период не использовались для подбора этих параметров.
+В первоначальном контуре v01 использованы заранее заданные регуляризированные
+спецификации с ограниченной вычислительной сложностью. Автоматизированный
+подбор гиперпараметров — grid search, random search, байесовская оптимизация
+или Optuna — для этих baseline-моделей не проводился. Поэтому их параметры не
+интерпретируются как оптимальные для Fannie Mae; они задают воспроизводимую
+точку сравнения, одинаково применяемую к сопоставляемым выборкам. Ни
+validation-, ни OOT-период не использовались для выбора параметров v01.
+Отдельный validation-only эксперимент с tree-моделями описан в разделе 4.6
+и не изменяет зафиксированные результаты v01.
 
 ## 4.2. Дизайн временной валидации
 
@@ -125,7 +127,49 @@ precision-lift: оба нормированных показателя сниж�
 и на **рисунках 4.8–4.9** — [formal adverse](../../../reports/figures/horizon_sensitivity_v01/formal_adverse_horizon_oot_comparability_v01.png)
 и [раннее ухудшение](../../../reports/figures/horizon_sensitivity_v01/early_deterioration_horizon_oot_comparability_v01.png).
 
-## 4.6. Результаты моделирования
+## 4.6. Validation-only подбор параметров tree-моделей
+
+На расширенной Q1+Q3 выборке проведено отдельное, заранее зафиксированное
+сравнение трёх tree-алгоритмов: XGBoost, CatBoost и LightGBM. Для каждого
+алгоритма и каждого шестимесячного исхода сопоставлялись фиксированная
+baseline-спецификация и две регуляризированные альтернативы. Во всех 18
+обучениях использовались один и тот же case-control train-период и неизменная
+validation-выборка. Скрипт подбора не принимает OOT-файл; калибровка и
+независимая оценка выбранных конфигураций перенесены на следующий этап.
+
+Для `formal_adverse_6m` наибольший validation PR-AUC получен у
+`LightGBM medium_regularised`: 0,307409 против 0,304599 у фиксированной
+LightGBM-спецификации. Для XGBoost наибольшим остаётся baseline-значение
+0,306951; у CatBoost вариант `medium_regularised` повышает PR-AUC с 0,301151
+до 0,301573, но не превосходит XGBoost и LightGBM. Для
+`early_deterioration_6m` все регуляризированные варианты снижают PR-AUC
+относительно соответствующих baseline: глобальным validation-лидером остаётся
+фиксированный XGBoost с PR-AUC 0,098668. Сводка всех кандидатов приведена в
+**таблице 4.6** — [«Validation-only подбор tree-моделей»](../../../reports/tree_hyperparameter_selection_v01/tree_validation_candidate_comparison_v01.csv),
+а выбранные по validation конфигурации — в [таблице 4.7](../../../reports/tree_hyperparameter_selection_v01/tree_validation_overall_selection_v01.csv).
+
+После изотонической калибровки на validation выбранные конфигурации и fixed
+tree-baselines были один раз оценены на общем OOT-периоде. Для formal adverse
+`LightGBM medium_regularised` не подтвердил validation-преимущество: его raw
+PR-AUC равен 0,306565 против 0,308719 у fixed XGBoost, calibrated Brier score
+— 0,003627 против 0,003618, Red precision — 24,405% против 24,497%, а среднее
+время опережения — 2,523 против 2,535 месяца. Следовательно, заранее
+определённое правило обновления model registry не выполнено.
+
+Для раннего ухудшения validation-selected fixed XGBoost на OOT имеет raw
+PR-AUC 0,070550, calibrated Brier score 0,020483, Amber precision 9,225% и
+среднее время опережения 3,038 месяца. CatBoost показывает несколько более
+высокие калиброванные PR-AUC и Amber precision на том же OOT, но не был
+выбран по validation. Его последующий выбор означал бы подбор модели на тесте;
+поэтому результат фиксируется лишь как основание для нового заранее
+зарегистрированного эксперимента. Итоговая OOT-таблица приведена в **таблице
+4.8** — [«Калиброванная OOT-проверка и registry-решение»](../../../reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv),
+а reliability diagrams — на **рисунках 4.10–4.11**: [formal adverse](../../../reports/figures/tree_hyperparameter_selection_v01/formal_adverse_6m_oot_reliability_v01.png)
+и [раннее ухудшение](../../../reports/figures/tree_hyperparameter_selection_v01/early_deterioration_6m_oot_reliability_v01.png).
+Active SupTech-прототип сохраняет frozen XGBoost v01 и действующую Red/Amber
+policy.
+
+## 4.7. Результаты моделирования
 
 На out-of-time выборке логистическая регрессия достигает ROC-AUC 0,8794 для
 formal adverse и 0,7254 для раннего ухудшения. Isotonic calibration снижает

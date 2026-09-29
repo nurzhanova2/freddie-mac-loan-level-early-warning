@@ -9,7 +9,7 @@ import '../styles/app.css';
 
 function App() {
   const [activeScreen, setActiveScreen] = useState('research-overview');
-  const [language, setLanguage] = useState('ru');
+  const [language, setLanguage] = useState(() => sessionStorage.getItem('suptech_language') ?? 'ru');
   const [selectedAlertId, setSelectedAlertId] = useState(null);
   const [identity, setIdentity] = useState(() => {
     const token = sessionStorage.getItem('suptech_access_token');
@@ -21,13 +21,17 @@ function App() {
     ['suptech_access_token', 'suptech_role', 'suptech_username'].forEach((key) => sessionStorage.removeItem(key));
     setIdentity(null); setActiveScreen('research-overview'); setSelectedAlertId(null);
   }
+  function changeLanguage(nextLanguage) {
+    sessionStorage.setItem('suptech_language', nextLanguage);
+    setLanguage(nextLanguage);
+  }
 
-  if (!identity) return <LoginGate onAuthenticated={setIdentity} />;
+  if (!identity) return <LoginGate language={language} onLanguageChange={changeLanguage} onAuthenticated={setIdentity} />;
   return (
     <div className="app-shell">
       <AppSidebar activeScreen={activeScreen} language={language} onNavigate={setActiveScreen} identity={identity} />
       <div className="app-shell__main">
-        <Topbar language={language} onLanguageChange={setLanguage} identity={identity} onLogout={logout} />
+        <Topbar language={language} onLanguageChange={changeLanguage} identity={identity} onLogout={logout} />
         <main className="app-content" id="main-content">
           {activeScreen.startsWith('research') ? <ResearchPages activeScreen={activeScreen} language={language} /> : ['ews-dashboard', 'ews-alert-queue', 'ews-alert-detail', 'ews-risk-monitoring', 'ews-governance', 'ews-administration'].includes(activeScreen) ? <EwsPages activeScreen={activeScreen} language={language} selectedAlertId={selectedAlertId} onSelectAlert={setSelectedAlertId} onNavigate={setActiveScreen} identity={identity} /> : (
             <section className="future-page" aria-labelledby="future-title">

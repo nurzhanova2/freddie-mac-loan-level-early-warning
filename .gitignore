@@ -10,6 +10,9 @@ fannie_mae/data/processed/
 fannie_mae/data/external/
 fannie_mae/data/model_samples_v01/
 fannie_mae/data/model_samples_v02_q1q3/
+fannie_mae/data/macro_enriched_v01/
+fannie_mae/models/tuned_trees_validation_v01/
+fannie_mae/reports/tree_hyperparameter_selection_v01/*alerts*.parquet
 fannie_mae/data/horizon_sensitivity_v01/
 !fannie_mae/data/horizon_sensitivity_v01/
 fannie_mae/data/horizon_sensitivity_v01/*

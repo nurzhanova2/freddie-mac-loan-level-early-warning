@@ -69,6 +69,19 @@ its lift falls from 3.856 to 3.285. Thus, the increase in absolute precision
 at twelve months is principally a higher-base-rate effect, not evidence of
 superior prioritisation.
 
+### 6.2.3. Limits of validation-only tree-model selection
+
+The separate selection on extended Q1+Q3 data was not combined with the
+principal findings before one OOT test. On validation, regularised LightGBM
+reaches PR-AUC 0.307409 for formal adverse, but on OOT it falls behind fixed
+XGBoost in PR-AUC, Brier score, Red precision, and mean lead time. It therefore
+does not enter the prototype registry. For early deterioration, fixed XGBoost
+was selected on validation and retained after OOT; CatBoost's higher isolated
+operational values are not used for a post-test replacement. This refusal to
+replace the model is a model-governance outcome rather than an absence of
+alternatives. The candidate log and OOT decision are reported in [Tables
+4.6–4.8](../../../reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv).
+
 ## 6.3. Limitations and further research
 
 The conclusions are limited to the Fannie Mae Primary Dataset and seven Q1

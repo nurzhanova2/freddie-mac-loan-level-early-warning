@@ -1,17 +1,98 @@
 :root {
-  --ink: #201e1d;
-  --paper: #f3f2f2;
-  --white: #ffffff;
-  --navy: #102b4e;
-  --turquoise: #087e8b;
-  --amber: #a85d00;
-  --red: #b52417;
-  --rule: #a8a5a1;
+  /* Depot-derived dark surfaces */
+  --color-carbon: #04040b;
+  --color-graphite: #121113;
+  --color-obsidian: #1a191b;
+  --color-slate: #232225;
+  --color-basalt: #2b292d;
+  --color-iron: #323035;
+  --color-pewter: #3c393f;
+  --color-steel: #49474e;
+  --color-fog: #7c7a85;
+  --color-silver: #b5b2bc;
+  --color-ash: #eeeef0;
+  --color-chalk: #e5e5e5;
+
+  /* Brand and low-frequency supporting accents */
+  --color-signal-green: #71d083;
+  --color-led-green: #366740;
+  --color-moss-border: #2d5736;
+  --color-forest-wash: #1d3a24;
+  --color-fern-ground: #1b2a1e;
+  --color-link-blue: #70b8ff;
+  --color-lilac-accent: #baa7ff;
+  --color-plum-edge: #291f43;
+  --color-iris-border: #473876;
+  --color-lavender-mist: #e2ddfe;
+
+  /* Functional alert semantics: never replace these with the brand green. */
+  --color-alert-red: #ff7b72;
+  --color-alert-red-surface: #35191d;
+  --color-alert-red-border: #74343a;
+  --color-alert-amber: #f2b35d;
+  --color-alert-amber-surface: #3a2a16;
+  --color-alert-amber-border: #76552b;
+  --color-info: #70b8ff;
+  --color-success: #71d083;
+
+  /* Semantic aliases used by the existing application. */
+  --ink: var(--color-ash);
+  --paper: var(--color-carbon);
+  --white: var(--color-graphite);
+  --navy: var(--color-signal-green);
+  --turquoise: var(--color-link-blue);
+  --amber: var(--color-alert-amber);
+  --red: var(--color-alert-red);
+  --rule: var(--color-basalt);
+  --surface-canvas: var(--color-carbon);
+  --surface-card: var(--color-graphite);
+  --surface-panel: var(--color-obsidian);
+  --surface-interactive: var(--color-slate);
+  --surface-featured: var(--color-forest-wash);
+  --border-subtle: var(--color-basalt);
+  --border-strong: var(--color-steel);
+  --text-primary: var(--color-ash);
+  --text-heading: var(--color-chalk);
+  --text-secondary: var(--color-silver);
+  --text-muted: var(--color-fog);
+
+  /* Montserrat is the human-facing face; fallbacks preserve offline Docker operation. */
+  --font-display: Montserrat, "Helvetica Neue", Arial, sans-serif;
+  --font-text: Montserrat, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Red Hat Mono", "SFMono-Regular", Consolas, monospace;
+  --text-caption: 0.75rem;
+  --text-body-sm: 0.875rem;
+  --text-body: 1rem;
+  --text-subheading: 1.125rem;
+  --text-heading-sm: 1.25rem;
+  --text-heading: 2.25rem;
+  --text-heading-lg: 3rem;
+  --text-display: 3.75rem;
+  --tracking-ui: 0.025em;
+  --tracking-display: -0.025em;
+
+  /* Geometry and layout */
   --space-1: 0.5rem;
   --space-2: 1rem;
   --space-3: 1.5rem;
-  --space-4: 2.5rem;
-  --space-5: 4rem;
-  --max-content: 76rem;
+  --space-4: 2rem;
+  --space-5: 3rem;
+  --space-6: 4rem;
+  --space-7: 8rem;
+  --max-content: 75rem;
+  --sidebar-width: 15rem;
+  --sidebar-width-compact: 13.5rem;
+  --radius-sm: 0.125rem;
+  --radius-md: 0.375rem;
+  --radius-lg: 0.625rem;
+  --radius-nav: var(--radius-sm);
+  --radius-card: var(--radius-md);
+  --radius-control: var(--radius-md);
+  --shadow-subtle: inset 0 1px 0 rgb(255 255 255 / 6%);
+
+  /* Motion: limited to feedback and state changes, never data interpretation. */
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+  --duration-fast: 120ms;
+  --duration-ui: 180ms;
 }

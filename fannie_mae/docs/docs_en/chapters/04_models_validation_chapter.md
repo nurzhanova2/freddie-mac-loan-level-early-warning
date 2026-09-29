@@ -10,12 +10,14 @@ comparisons [1]. XGBoost is included as a scalable gradient-boosting method
 subsequent deterioration need not be linear. Better predictive performance is
 not interpreted as evidence of a causal relation between a feature and outcome.
 
-To keep algorithm comparisons comparable, pre-specified regularised
-specifications with bounded computational complexity were used. No automated
-hyperparameter search — grid search, random search, Bayesian optimisation, or
-Optuna — was performed. The parameters are therefore not interpreted as
-optimal for Fannie Mae; they define a reproducible baseline applied uniformly
-to comparable samples. Neither validation nor OOT data were used to tune them.
+The original v01 analysis used pre-specified regularised specifications with
+bounded computational complexity. No automated hyperparameter search — grid
+search, random search, Bayesian optimisation, or Optuna — was performed for
+those baseline models. Their parameters are therefore not interpreted as
+optimal for Fannie Mae; they define a reproducible comparison point applied
+uniformly to comparable samples. Neither validation nor OOT data were used to
+select v01 parameters. A separate validation-only tree-model experiment is
+described in Section 4.6; it does not alter the frozen v01 results.
 
 ## 4.2. Temporal validation design
 
@@ -118,7 +120,48 @@ in **Table 4.5** — [“Common-OOT horizon comparison”](../../../reports/hori
 and **Figures 4.8–4.9** — [formal adverse](../../../reports/figures/horizon_sensitivity_v01/formal_adverse_horizon_oot_comparability_v01.png)
 and [early deterioration](../../../reports/figures/horizon_sensitivity_v01/early_deterioration_horizon_oot_comparability_v01.png).
 
-## 4.6. Empirical model results
+## 4.6. Validation-only tree-model hyperparameter selection
+
+A separate, pre-registered comparison was conducted on the extended Q1+Q3
+sample for XGBoost, CatBoost, and LightGBM. For each algorithm and each
+six-month outcome, the fixed baseline specification was compared with two
+regularised alternatives. All 18 fits used the same case-control training
+period and unchanged validation sample. The selection script has no OOT input;
+calibration and independent assessment of selected configurations are deferred
+to the next stage.
+
+For `formal_adverse_6m`, `LightGBM medium_regularised` gives the highest
+validation PR-AUC: 0.307409 versus 0.304599 for fixed LightGBM. XGBoost retains
+its fixed baseline as its best configuration at 0.306951; CatBoost
+`medium_regularised` increases PR-AUC from 0.301151 to 0.301573 but does not
+exceed XGBoost or LightGBM. For `early_deterioration_6m`, every regularised
+alternative lowers PR-AUC relative to its own baseline, and fixed XGBoost
+remains the overall validation leader at 0.098668. The full candidate table is
+reported in **Table 4.6** — [“Validation-only tree-model selection”](../../../reports/tree_hyperparameter_selection_v01/tree_validation_candidate_comparison_v01.csv),
+with configurations selected on validation in [Table 4.7](../../../reports/tree_hyperparameter_selection_v01/tree_validation_overall_selection_v01.csv).
+
+After isotonic calibration on validation, selected configurations and fixed
+tree baselines were evaluated once on the common OOT period. For formal
+adverse, `LightGBM medium_regularised` did not confirm its validation
+advantage: its raw PR-AUC is 0.306565 versus 0.308719 for fixed XGBoost, its
+calibrated Brier score is 0.003627 versus 0.003618, its Red precision is
+24.405% versus 24.497%, and mean lead time is 2.523 versus 2.535 months. The
+pre-specified model-registry update rule is therefore not met.
+
+For early deterioration, validation-selected fixed XGBoost has OOT raw PR-AUC
+of 0.070550, calibrated Brier score of 0.020483, Amber precision of 9.225%,
+and mean lead time of 3.038 months. CatBoost has slightly higher calibrated
+PR-AUC and Amber precision on the same OOT sample, but it was not selected on
+validation. Selecting it afterwards would amount to test-set model selection,
+so the observation is recorded only as motivation for a new pre-registered
+experiment. The final OOT table appears in **Table 4.8** — [“Calibrated OOT
+test and registry decision”](../../../reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv),
+and reliability diagrams in **Figures 4.10–4.11**: [formal adverse](../../../reports/figures/tree_hyperparameter_selection_v01/formal_adverse_6m_oot_reliability_v01.png)
+and [early deterioration](../../../reports/figures/tree_hyperparameter_selection_v01/early_deterioration_6m_oot_reliability_v01.png).
+The active SupTech prototype retains frozen XGBoost v01 and its Red/Amber
+policy.
+
+## 4.7. Empirical model results
 
 On the out-of-time sample, logistic regression obtains ROC-AUC values of
 0.8794 for formal adverse status and 0.7254 for early deterioration. Isotonic

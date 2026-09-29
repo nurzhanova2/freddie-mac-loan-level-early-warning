@@ -1,11 +1,11 @@
 import MetricCard from '../../../components/MetricCard.jsx';
-import { BarChart, LineChart } from '../../../components/MiniChart.jsx';
+import { BarChart } from '../../../components/MiniChart.jsx';
 import { api } from '../../../data/apiClient.js';
 import { ApiState, Title, useApi } from '../shared.jsx';
 
 export function Dashboard({ copy }) {
   const state = useApi(api.metrics);
-  return <section className="ews-page"><Title label="SupTech Early-Warning System / E1" title={copy.dashboard} /><ApiState state={state} copy={copy}>{state.data && <><div className="metric-grid metric-grid--four"><MetricCard value={state.data.alert_count} label="Alerts scored" /><MetricCard value={state.data.red_alert_count} label="Red alerts" tone="red" /><MetricCard value={state.data.amber_alert_count} label="Amber alerts" tone="amber" /><MetricCard value={state.data.requires_review_count} label="Require expert review" tone="turquoise" /></div><div className="chart-grid"><article className="panel"><h2>Red / Amber alert distribution</h2><LineChart label="Alert tier trend" series={[{ name: 'Red', tone: 'red', values: [state.data.red_alert_count] }, { name: 'Amber', tone: 'amber', values: [state.data.amber_alert_count] }]} /></article><article className="panel"><h2>Workflow boundary</h2><p className="audit-summary">API returns a minimal safe alert DTO. It does not return raw Fannie Mae files, stable loan identifiers, or training data. Each alert requires human review.</p></article></div></>}</ApiState></section>;
+  return <section className="ews-page"><Title label="SupTech Early-Warning System / E1" title={copy.dashboard} /><ApiState state={state} copy={copy}>{state.data && <><div className="metric-grid metric-grid--four"><MetricCard value={state.data.alert_count} label="Alerts scored" /><MetricCard value={state.data.red_alert_count} label="Red alerts" tone="red" /><MetricCard value={state.data.amber_alert_count} label="Amber alerts" tone="amber" /><MetricCard value={state.data.requires_review_count} label="Require expert review" tone="turquoise" /></div><div className="chart-grid"><article className="panel"><h2>Red / Amber alert distribution</h2><BarChart label="Alert tier distribution" rows={[{ label: 'Red', values: [{ name: 'alerts', value: state.data.red_alert_count, tone: 'red' }] }, { label: 'Amber', values: [{ name: 'alerts', value: state.data.amber_alert_count, tone: 'amber' }] }]} /></article><article className="panel"><h2>Workflow boundary</h2><p className="audit-summary">API returns a minimal safe alert DTO. It does not return raw Fannie Mae files, stable loan identifiers, or training data. Each alert requires human review.</p></article></div></>}</ApiState></section>;
 }
 
 export function RiskMonitoring({ copy, language }) {

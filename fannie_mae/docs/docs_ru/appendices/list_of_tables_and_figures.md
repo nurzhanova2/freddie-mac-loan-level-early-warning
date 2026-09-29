@@ -18,6 +18,9 @@
 | Таблица 4.3 | Сравнение вероятностной калибровки | [CSV](../../../reports/models/logistic_isotonic_calibration_v01_summary.csv) |
 | Таблица 4.4 | Чувствительность OOT-метрик к размеру natural-rate train | [CSV](../../../reports/train_size_sensitivity_v01/train_size_oot_metrics_summary_v01.csv) |
 | Таблица 4.5 | Сопоставление горизонтов 3, 6 и 12 месяцев на общем OOT | [CSV](../../../reports/horizon_sensitivity_v01/horizon_oot_comparability_summary_v01.csv) |
+| Таблица 4.6 | Validation-only сопоставление кандидатов tree-моделей | [CSV](../../../reports/tree_hyperparameter_selection_v01/tree_validation_candidate_comparison_v01.csv) |
+| Таблица 4.7 | Конфигурации tree-моделей, выбранные на validation | [CSV](../../../reports/tree_hyperparameter_selection_v01/tree_validation_overall_selection_v01.csv) |
+| Таблица 4.8 | Калиброванная OOT-проверка tree-моделей и registry-решение | [CSV](../../../reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv) |
 | Таблица 5.1 | Глобальная SHAP-важность для formal adverse | [CSV](../../../reports/models/formal_adverse_6m_xgboost_shap_global_v01.csv) |
 | Таблица 5.2 | Permutation importance formal adverse на validation | [CSV](../../../reports/xai_extension_v01/formal_adverse_6m_validation_permutation_importance_v01.csv) |
 | Таблица 5.3 | Permutation importance раннего ухудшения на validation | [CSV](../../../reports/xai_extension_v01/early_deterioration_6m_validation_permutation_importance_v01.csv) |
@@ -46,6 +49,8 @@
 | Рисунок 4.7 | OOT-калибровка раннего ухудшения по размерам train | [PNG](../../../reports/figures/train_size_sensitivity_v01/early_deterioration_6m_train_size_oot_calibration_v01.png) |
 | Рисунок 4.8 | Нормированное OOT-сопоставление горизонтов formal adverse | [PNG](../../../reports/figures/horizon_sensitivity_v01/formal_adverse_horizon_oot_comparability_v01.png) |
 | Рисунок 4.9 | Нормированное OOT-сопоставление горизонтов раннего ухудшения | [PNG](../../../reports/figures/horizon_sensitivity_v01/early_deterioration_horizon_oot_comparability_v01.png) |
+| Рисунок 4.10 | OOT-калибровка tree-моделей для formal adverse | [PNG](../../../reports/figures/tree_hyperparameter_selection_v01/formal_adverse_6m_oot_reliability_v01.png) |
+| Рисунок 4.11 | OOT-калибровка tree-моделей для раннего ухудшения | [PNG](../../../reports/figures/tree_hyperparameter_selection_v01/early_deterioration_6m_oot_reliability_v01.png) |
 | Рисунок 5.1 | Глобальная SHAP-важность formal adverse | [PNG](../../../reports/figures/models/formal_adverse_6m_xgboost_shap_global_v01.png) |
 | Рисунок 5.2 | Сопоставление SHAP-факторов Q1 и Q3 для formal adverse | [PNG](../../../reports/figures/q3_shap_v01/formal_adverse_6m_q1_q3_shap_comparison_v01.png) |
 | Рисунок 5.3 | ALE-профили formal adverse на validation | [PNG](../../../reports/figures/xai_extension_v01/formal_adverse_6m_validation_ale_v01.png) |

@@ -103,11 +103,27 @@ The [versioned policy](../../../config/fannie_suptech_trigger_policy_v01.yml)
 explicitly prohibits autonomous supervisory or enforcement action. An alert
 only prioritises human review and is accompanied by a local explanation.
 
-Model parameters were defined *a priori* as regularised, computationally
-feasible baseline specifications. Grid/random search, Bayesian optimisation,
-and Optuna were not used, and the parameters are not claimed to be optimal for
-Fannie Mae. The decision makes comparison uniform but leaves validation-only
-hyperparameter tuning as subsequent work.
+For the v01 baseline contour, parameters were set *a priori* as regularised and
+computationally feasible specifications. This choice ensured a comparable
+initial comparison; it does not claim that the settings are optimal for Fannie
+Mae.
+
+The subsequent v02 governance experiment has been completed in the expanded
+Q1+Q3 contour. Before OOT access, three pre-specified configurations were
+defined for each of XGBoost, CatBoost, and LightGBM; 18 fits were completed on
+the unchanged validation design across the two outcomes. Configuration choice
+used validation PR-AUC only. Validation selected `LightGBM
+medium_regularised` for `formal_adverse_6m` and the fixed XGBoost
+specification for `early_deterioration_6m`. Isotonic calibrators were then fit
+on validation only, and each selected configuration was evaluated once on the
+previously unused OOT set.
+
+The OOT check did not justify a registry update. The validation-selected
+LightGBM configuration for formal adverse did not meet the pre-specified update
+rule against the active XGBoost model. For early deterioration, XGBoost had
+already been selected on validation and was retained without post-test model
+selection. The active registry entry therefore remains
+`calibrated_xgboost_v01` for both six-month outcomes.
 
 ## A.7. Control artefacts
 
@@ -120,3 +136,6 @@ hyperparameter tuning as subsequent work.
 - [Permutation importance: formal adverse](../../../reports/xai_extension_v01/formal_adverse_6m_validation_permutation_importance_v01.csv)
 - [Permutation importance: early deterioration](../../../reports/xai_extension_v01/early_deterioration_6m_validation_permutation_importance_v01.csv)
 - [Red/Amber cohort-group SHAP stability audit](../../../reports/xai_extension_v01/xai_alert_cohort_shap_audit_summary_v01.csv)
+- [v02 tree-model comparison across 18 validation fits](../../../reports/tree_hyperparameter_selection_v01/tree_validation_candidate_comparison_v01.csv)
+- [Final OOT table for the tree-model governance experiment](../../../reports/tree_hyperparameter_selection_v01/tree_oot_calibrated_comparison_v01.csv)
+- [Model-registry retention decision](../../../reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv)

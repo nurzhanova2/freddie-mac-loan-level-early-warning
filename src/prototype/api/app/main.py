@@ -8,7 +8,7 @@ from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from .db import SessionLocal, get_session
-from .models import Alert, AuditEvent, DataVersion, ExpertReview, ModelVersion
+from .models import Alert, AuditEvent, DataVersion, ExpertReview, ModelRun, ModelVersion
 from .repository import record_review, seed_demo_data, serialize_alert
 from .schemas import LoginRequest, ReviewCreate, UserCreate, UserUpdate
 from .security import issue_token, password_record, require_roles, verify_password
@@ -178,4 +178,12 @@ def evaluation_summary(session: Session = Depends(get_session), _: User = Depend
 def model_registry(session: Session = Depends(get_session), _: User = Depends(require_roles('model_governance', 'data_steward'))):
     model = session.scalar(select(ModelVersion).limit(1))
     data = session.scalar(select(DataVersion).limit(1))
-    return envelope({'model_version': model.version, 'data_version': data.version, 'targets': model.targets.split(','), 'validation': model.validation_summary, 'use_status': model.use_status}, session)
+    tree_oot_run = session.scalar(select(ModelRun).where(ModelRun.run_reference == 'tree-model-oot-governance-v01'))
+    registry_decision = None
+    if tree_oot_run is not None:
+        registry_decision = {
+            'status': 'No registry change',
+            'message': 'v02 Q1+Q3 tree-model evaluation completed; no registry change.',
+            'active_model': model.version,
+        }
+    return envelope({'model_version': model.version, 'data_version': data.version, 'targets': model.targets.split(','), 'validation': model.validation_summary, 'use_status': model.use_status, 'registry_decision': registry_decision}, session)

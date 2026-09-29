@@ -94,8 +94,8 @@ Use **Sign out** in the header before testing another role.
 ## Research results
 
 The primary v01 models use Fannie Mae Q1 cohorts, a time-based split, and a
-six-month prediction horizon. OOT was not used for model fitting, calibration,
-threshold selection, or hyperparameter selection.
+six-month prediction horizon. OOT was not used for fitting, calibration,
+threshold selection, or hyperparameter selection of that baseline.
 
 | Outcome | Leading model | OOT ROC-AUC | OOT PR-AUC | Operational policy |
 |---|---|---:|---:|---|
@@ -112,6 +112,9 @@ threshold selection, or hyperparameter selection.
 - SHAP, permutation importance, and ALE diagnostics;
 - Logistic Regression, XGBoost, CatBoost, LightGBM, and pre-specified hybrid
   comparison experiments in the Q1+Q3 research contour.
+- completed v02 Q1+Q3 tree-model governance experiment: 18 validation fits,
+  validation-only calibration, and one OOT evaluation. The active registry was
+  not changed; see the [final governance decision table](fannie_mae/reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv).
 
 Detailed artifacts: [`fannie_mae/reports/`](fannie_mae/reports/) ·
 [`fannie_mae/docs/`](fannie_mae/docs/).

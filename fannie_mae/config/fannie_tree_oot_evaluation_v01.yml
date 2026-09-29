@@ -1,0 +1,41 @@
+version: fannie_tree_oot_evaluation_v01
+status: locked_before_oot_execution
+purpose: >
+  One-time OOT evaluation after validation-only tree-model configuration
+  selection. No metric, threshold, algorithm, or calibration method may be
+  changed after this evaluation begins.
+data:
+  samples_dir: fannie_mae/data/model_samples_v02_q1q3
+  validation: 2017-01 through 2020-12
+  out_of_time_test: 2021-01 through 2025-09
+calibration:
+  method: isotonic_regression
+  fitting_split: validation_only
+comparators:
+  formal_adverse_6m:
+    selected_candidate: {algorithm: lightgbm, candidate_id: medium_regularised}
+    fixed_baselines:
+      - {algorithm: xgboost, candidate_id: fixed_baseline}
+      - {algorithm: catboost, candidate_id: fixed_baseline}
+      - {algorithm: lightgbm, candidate_id: fixed_baseline}
+  early_deterioration_6m:
+    selected_candidate: {algorithm: xgboost, candidate_id: fixed_baseline}
+    fixed_baselines:
+      - {algorithm: xgboost, candidate_id: fixed_baseline}
+      - {algorithm: catboost, candidate_id: fixed_baseline}
+      - {algorithm: lightgbm, candidate_id: fixed_baseline}
+alert_policy:
+  formal_adverse_6m: {tier: Red, capacity_percent: 1}
+  early_deterioration_6m: {tier: Amber, capacity_percent: 5}
+decision_rule:
+  formal_adverse_6m: >
+    Consider a model-registry update only if the selected configuration improves
+    OOT PR-AUC and calibrated Brier score relative to fixed LightGBM, and does
+    not reduce the primary Red precision or mean lead time relative to the
+    current fixed XGBoost comparator.
+  early_deterioration_6m: >
+    Retain fixed XGBoost unless another configuration improves OOT PR-AUC and
+    calibrated Brier score without reducing Amber precision or mean lead time.
+prototype_update_rule: >
+  The active v01 prototype remains unchanged unless the OOT decision rule is
+  met and a separate explainability and export-compatibility audit is passed.

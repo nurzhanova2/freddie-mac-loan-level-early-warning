@@ -106,11 +106,27 @@ natural-rate подвыборки 1%, 5%, 10% и 25%; validation осталас�
 сигнал задаёт приоритет экспертной проверки и сопровождается локальным
 объяснением.
 
-Параметры моделей определены *a priori* как регуляризированные, вычислительно
-допустимые baseline-спецификации. Ни grid/random search, ни байесовская
-оптимизация, ни Optuna не применялись; параметры не заявляются как оптимальные
-для Fannie Mae. Это решение обеспечивает единообразие сравнения, но оставляет
-отдельный validation-only tuning задачей последующей работы.
+Для базового контура v01 параметры были заданы *a priori* как
+регуляризированные и вычислительно допустимые спецификации. Эта фиксация
+обеспечила сопоставимость исходного сравнения и не означает, что параметры
+признаны оптимальными для Fannie Mae.
+
+Последующий governance-эксперимент v02 завершён в расширенном контуре Q1+Q3.
+До обращения к OOT были заранее зафиксированы три спецификации для каждой из
+XGBoost, CatBoost и LightGBM; для двух целевых исходов на неизменной
+validation-выборке выполнено 18 обучений. Конфигурация выбиралась только по
+validation PR-AUC. Для `formal_adverse_6m` validation выбрала
+`LightGBM medium_regularised`, а для `early_deterioration_6m` — фиксированную
+спецификацию XGBoost. Для отобранных конфигураций калибратор isotonic regression
+обучался только на validation, после чего каждая из них была один раз оценена
+на ранее неиспользованной OOT-выборке.
+
+OOT-проверка не подтвердила оснований для замены реестровой модели: выбранная
+LightGBM-конфигурация для формального неблагоприятного исхода не выполнила
+заранее установленное правило обновления относительно действующего XGBoost.
+Для раннего ухудшения XGBoost был выбран ещё на validation и сохранён без
+послетестового выбора. Поэтому действующая запись реестра остаётся
+`calibrated_xgboost_v01` для обоих шестимесячных исходов.
 
 ## А.7. Контрольные артефакты
 
@@ -123,3 +139,6 @@ natural-rate подвыборки 1%, 5%, 10% и 25%; validation осталас�
 - [Permutation importance: formal adverse](../../../reports/xai_extension_v01/formal_adverse_6m_validation_permutation_importance_v01.csv)
 - [Permutation importance: раннее ухудшение](../../../reports/xai_extension_v01/early_deterioration_6m_validation_permutation_importance_v01.csv)
 - [Аудит SHAP-устойчивости Red/Amber по когортным группам](../../../reports/xai_extension_v01/xai_alert_cohort_shap_audit_summary_v01.csv)
+- [Сравнение 18 validation-обучений tree-моделей v02](../../../reports/tree_hyperparameter_selection_v01/tree_validation_candidate_comparison_v01.csv)
+- [Итоговая OOT-таблица tree-model governance-эксперимента](../../../reports/tree_hyperparameter_selection_v01/tree_oot_calibrated_comparison_v01.csv)
+- [Решение о сохранении model registry](../../../reports/tree_hyperparameter_selection_v01/tree_oot_governance_decision_v01.csv)

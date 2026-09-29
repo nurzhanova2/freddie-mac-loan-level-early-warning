@@ -1,0 +1,4 @@
+target,algorithm,candidate_id,train_rows,train_events,validation_rows,validation_events,parameters_json,roc_auc,pr_auc,brier_uncalibrated
+early_deterioration_6m,catboost,fixed_baseline,1240046,396152,1022461,28089,"{""depth"": 6, ""iterations"": 180, ""l2_leaf_reg"": 3.0, ""learning_rate"": 0.08}",0.7542463284873193,0.09718151283650338,0.05748256477687183
+early_deterioration_6m,lightgbm,fixed_baseline,1240046,396152,1022461,28089,"{""colsample_bytree"": 0.8, ""learning_rate"": 0.08, ""max_depth"": 6, ""min_child_samples"": 20, ""n_estimators"": 180, ""num_leaves"": 31, ""reg_lambda"": 0.0, ""subsample"": 0.8}",0.7560377043268338,0.09816031701629253,0.05679837874873213
+early_deterioration_6m,xgboost,fixed_baseline,1240046,396152,1022461,28089,"{""colsample_bytree"": 0.8, ""learning_rate"": 0.08, ""max_depth"": 6, ""min_child_weight"": 10, ""n_estimators"": 160, ""reg_lambda"": 1.0, ""subsample"": 0.8}",0.7566449092620972,0.09866817529221619,0.057229917381803906

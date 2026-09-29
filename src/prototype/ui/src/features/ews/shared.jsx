@@ -17,9 +17,9 @@ const driverNames = {
 };
 
 export const driverLabel = (value) => driverNames[value] ?? value;
-export const Tier = ({ value }) => <span className={`tier tier--${value.toLowerCase()}`}>{value}</span>;
-export const Status = ({ value }) => <span className={`status status--${value.toLowerCase().replace(' ', '-')}`}>{value}</span>;
-export const Title = ({ label, title }) => <><p className="section-label">{label}</p><h1>{title}</h1></>;
+export const Tier = ({ value }) => <span className={`tier tier--${value.toLowerCase()}`} aria-label={`Risk tier: ${value}`}>{value}</span>;
+export const Status = ({ value }) => <span className={`status status--${value.toLowerCase().replace(' ', '-')}`} aria-label={`Review status: ${value}`}>{value}</span>;
+export const Title = ({ label, title }) => <header className="page-title"><p className="section-label">{label}</p><h1>{title}</h1></header>;
 
 export function useApi(load, dependencies = []) {
   const [state, setState] = useState({ loading: true, error: null, data: null });
@@ -35,10 +35,10 @@ export function useApi(load, dependencies = []) {
 }
 
 export function ApiState({ state, copy, children }) {
-  if (state.loading) return <p className="api-state">{copy.loading}</p>;
+  if (state.loading) return <p className="api-state api-state--loading" role="status">{copy.loading}</p>;
   if (state.error) {
     const accessError = state.error === 'API 401' || state.error === 'API 403';
-    return <p className="api-state api-state--error">{accessError ? 'This role does not have access to this controlled view.' : copy.error}</p>;
+    return <p className="api-state api-state--error" role="alert">{accessError ? 'This role does not have access to this controlled view.' : copy.error}</p>;
   }
   return children;
 }
