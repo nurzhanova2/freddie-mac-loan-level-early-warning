@@ -37,9 +37,8 @@ capacity-based Red/Amber alerts, локальные SHAP-объяснения и
 workflow экспертной проверки.
 
 <p align="center">
-  <img src="docs/assets/screenshots/suptech/research-overview.png" alt="Научный обзор" width="32%">
-  <img src="docs/assets/screenshots/suptech/dataset-overview.png" alt="Обзор данных" width="32%">
-  <img src="docs/assets/screenshots/suptech/research-design.png" alt="Дизайн исследования" width="32%">
+  <img src="docs/assets/screenshots/suptech/research-overview.png" alt="Научный обзор" width="48%">
+  <img src="docs/assets/screenshots/suptech/alert-queue.png" alt="Очередь Red и Amber сигналов" width="48%">
 </p>
 
 ## Что включено
@@ -122,14 +121,6 @@ demo-password-change-me
 
 </details>
 
-### Экраны научных результатов
-
-<p align="center">
-  <img src="docs/assets/screenshots/suptech/model-performance.png" alt="Качество моделей" width="32%">
-  <img src="docs/assets/screenshots/suptech/cohort-robustness.png" alt="Устойчивость между когортами" width="32%">
-  <img src="docs/assets/screenshots/suptech/research-conclusions.png" alt="Выводы исследования" width="32%">
-</p>
-
 ## SupTech-процесс
 
 ```text
@@ -154,14 +145,8 @@ demo-password-change-me
 4. Под `model_governance` или `data_steward` откройте **Model Governance → Audit trail**.
 
 <p align="center">
-  <img src="docs/assets/screenshots/suptech/ews-dashboard.png" alt="Панель раннего предупреждения" width="32%">
-  <img src="docs/assets/screenshots/suptech/alert-queue.png" alt="Очередь Red и Amber сигналов" width="32%">
-  <img src="docs/assets/screenshots/suptech/alert-detail.png" alt="Карточка сигнала с SHAP-объяснением" width="32%">
-</p>
-
-<p align="center">
+  <img src="docs/assets/screenshots/suptech/alert-detail.png" alt="Карточка сигнала с SHAP-объяснением" width="48%">
   <img src="docs/assets/screenshots/suptech/risk-monitoring.png" alt="Экран мониторинга риска" width="48%">
-  <img src="docs/assets/screenshots/suptech/model-governance.png" alt="Реестр моделей и журнал аудита" width="48%">
 </p>
 
 ## Роли и доступ
