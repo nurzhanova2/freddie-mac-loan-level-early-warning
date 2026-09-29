@@ -38,8 +38,9 @@ capacity-based Red/Amber alerts, local SHAP explanations, and an auditable
 review workflow.
 
 <p align="center">
-  <img src="docs/assets/screenshots/suptech/research-overview.png" alt="Research overview" width="48%">
-  <img src="docs/assets/screenshots/suptech/alert-queue.png" alt="Red and Amber alert queue" width="48%">
+  <img src="docs/assets/screenshots/suptech/research-overview.png" alt="Research overview" width="32%">
+  <img src="docs/assets/screenshots/suptech/dataset-overview.png" alt="Dataset overview" width="32%">
+  <img src="docs/assets/screenshots/suptech/research-design.png" alt="Research design" width="32%">
 </p>
 
 ## What is included
@@ -121,6 +122,14 @@ Detailed artifacts: [`fannie_mae/reports/`](fannie_mae/reports/) ·
 
 </details>
 
+### Research evidence screens
+
+<p align="center">
+  <img src="docs/assets/screenshots/suptech/model-performance.png" alt="Model performance" width="32%">
+  <img src="docs/assets/screenshots/suptech/cohort-robustness.png" alt="Robustness across cohorts" width="32%">
+  <img src="docs/assets/screenshots/suptech/research-conclusions.png" alt="Research conclusions" width="32%">
+</p>
+
 ## SupTech workflow
 
 ```text
@@ -147,8 +156,14 @@ eligible as-of-date features ──► calibrated model score
    in **Model Governance → Audit trail**.
 
 <p align="center">
-  <img src="docs/assets/screenshots/suptech/alert-detail.png" alt="Alert detail with local SHAP explanation" width="48%">
+  <img src="docs/assets/screenshots/suptech/ews-dashboard.png" alt="Early-warning dashboard" width="32%">
+  <img src="docs/assets/screenshots/suptech/alert-queue.png" alt="Red and Amber alert queue" width="32%">
+  <img src="docs/assets/screenshots/suptech/alert-detail.png" alt="Alert detail with local SHAP explanation" width="32%">
+</p>
+
+<p align="center">
   <img src="docs/assets/screenshots/suptech/risk-monitoring.png" alt="Risk monitoring view" width="48%">
+  <img src="docs/assets/screenshots/suptech/model-governance.png" alt="Model registry and audit trail" width="48%">
 </p>
 
 ## Roles and access
