@@ -1,4 +1,7 @@
+import { staticDemoApi } from './staticDemoApi.js';
+
 const BASE_URL = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:8000/api/v1';
+export const isStaticDemo = import.meta.env.VITE_STATIC_DEMO === 'true';
 
 async function request(path, options) {
   const token = sessionStorage.getItem('suptech_access_token');
@@ -8,7 +11,7 @@ async function request(path, options) {
   return payload.data;
 }
 
-export const api = {
+const networkApi = {
   login: (username, password) => request('/auth/login', { method: 'POST', body: JSON.stringify({ username, password }) }),
   metrics: () => request('/metrics/overview'),
   evaluation: () => request('/evaluation/summary'),
@@ -22,3 +25,5 @@ export const api = {
   createUser: (payload) => request('/admin/users', { method: 'POST', body: JSON.stringify(payload) }),
   updateUser: (username, payload) => request(`/admin/users/${username}`, { method: 'PATCH', body: JSON.stringify(payload) }),
 };
+
+export const api = isStaticDemo ? staticDemoApi : networkApi;

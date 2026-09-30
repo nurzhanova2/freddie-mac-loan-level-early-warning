@@ -686,6 +686,7 @@ tbody tr { transition: background-color var(--duration-fast) var(--ease-out); }
 .login-brand .section-label { max-width: 12rem; margin: 0; font-size: .59rem; line-height: 1.35; }
 .login-gate h1 { max-width: 10ch; margin: 20px 0 0; color: var(--text-heading); font-family: var(--font-display); font-size: clamp(2rem, 4vw, 2.4rem); font-weight: 300; letter-spacing: -.055em; line-height: .92; }
 .login-gate__lede { max-width: 23rem; margin: 18px 0 0; color: var(--text-secondary); font-size: .84rem; line-height: 1.55; }
+.login-gate__public-demo { margin: 14px 0 -4px; color: var(--text-muted); font-size: .72rem; line-height: 1.45; }
 .login-gate form { gap: 12px; margin-top: 22px; }
 .login-gate label { gap: 8px; font-size: .68rem; font-weight: 600; }
 .login-gate input { min-height: 46px; padding: 10px 13px; border-color: var(--border-strong); background: rgb(35 34 37 / 78%); font-size: .84rem; font-weight: 500; }

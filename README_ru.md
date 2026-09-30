@@ -13,6 +13,7 @@
 </p>
 
 <p>
+  <a href="#публичная-демонстрация">Публичная демо-версия</a> ·
   <a href="#быстрый-запуск">Быстрый запуск</a> ·
   <a href="#научные-результаты">Результаты</a> ·
   <a href="#suptech-процесс">Процесс</a> ·
@@ -51,6 +52,16 @@ workflow экспертной проверки.
 | Научные артефакты | EDA, temporal validation, метрики, trigger policy, SHAP, permutation importance, ALE, рисунки и главы на двух языках |
 | SupTech-прототип | React, FastAPI, PostgreSQL audit trail, RBAC, администрирование и Docker Compose |
 | Граница переносимости | Freddie Mac остаётся отдельным контуром будущей external validation |
+
+## Публичная демонстрация
+
+Интерфейс доступен по ссылке: **[nurzhanova2.github.io/freddie-mac-loan-level-early-warning](https://nurzhanova2.github.io/freddie-mac-loan-level-early-warning/)**.
+
+Это статическая демонстрация на GitHub Pages. В браузер передаются только
+синтетические обезличенные записи; API и PostgreSQL в публичной версии не
+запускаются, а изменения review или администрирования сохраняются только в
+текущей сессии браузера. Для полного локального прототипа с FastAPI,
+PostgreSQL, RBAC и постоянным audit trail используйте Docker Compose ниже.
 
 ## Быстрый запуск
 

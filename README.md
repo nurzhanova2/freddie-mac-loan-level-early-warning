@@ -14,6 +14,7 @@
 </p>
 
 <p>
+  <a href="#public-demo">Public demo</a> ·
   <a href="#quick-start">Quick start</a> ·
   <a href="#research-results">Research results</a> ·
   <a href="#suptech-workflow">Workflow</a> ·
@@ -52,6 +53,16 @@ review workflow.
 | Evidence | EDA, temporal validation, metrics, trigger policy, SHAP, permutation importance, ALE, figures, and bilingual chapters |
 | SupTech prototype | React interface, FastAPI, PostgreSQL audit trail, RBAC, administration, and Docker Compose |
 | Transferability boundary | Freddie Mac remains a separate workflow for future external validation after field harmonisation |
+
+## Public demo
+
+Open the interface at **[nurzhanova2.github.io/freddie-mac-loan-level-early-warning](https://nurzhanova2.github.io/freddie-mac-loan-level-early-warning/)**.
+
+The public page is a static GitHub Pages demonstration. It uses only synthetic,
+de-identified browser records; it has no live API or PostgreSQL database, and
+any review or administration changes exist only in the current browser session.
+For the complete local prototype—including FastAPI, PostgreSQL, RBAC and the
+persistent audit trail—start Docker Compose below.
 
 ## Quick start
 

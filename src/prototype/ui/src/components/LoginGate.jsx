@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { api } from '../data/apiClient.js';
+import { api, isStaticDemo } from '../data/apiClient.js';
 
 function LoginGate({ language, onLanguageChange, onAuthenticated }) {
   const [username, setUsername] = useState('demo_risk_analyst');
@@ -32,6 +32,7 @@ function LoginGate({ language, onLanguageChange, onAuthenticated }) {
       </header>
       <h1 id="login-title">{russian ? 'Платформа SupTech-исследований' : 'SupTech Research Platform'}</h1>
       <p className="login-gate__lede">{russian ? 'Войдите в локальный прототип, чтобы открыть разрешённые исследовательские и управленческие разделы.' : 'Sign in to the local prototype to open permitted research and governance views.'}</p>
+      {isStaticDemo && <p className="login-gate__public-demo">{russian ? 'Публичная демонстрация: используются только синтетические безопасные записи; изменения хранятся лишь в этом браузере.' : 'Public demonstration: only synthetic safe records are used; changes remain in this browser only.'}</p>}
       <form onSubmit={submit} aria-describedby="login-boundary">
         <label>{russian ? 'Логин' : 'Username'}<input value={username} onChange={(event) => setUsername(event.target.value)} autoComplete="username" autoFocus required /></label>
         <label>{russian ? 'Пароль' : 'Password'}<span className="login-password-field"><input type={passwordVisible ? 'text' : 'password'} value={password} onChange={(event) => setPassword(event.target.value)} autoComplete="current-password" required /><button type="button" className="login-password-toggle" aria-label={passwordVisible ? (russian ? 'Скрыть пароль' : 'Hide password') : (russian ? 'Показать пароль' : 'Show password')} aria-pressed={passwordVisible} onClick={() => setPasswordVisible((visible) => !visible)}><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 12s3.5-5.5 9.5-5.5S21.5 12 21.5 12s-3.5 5.5-9.5 5.5S2.5 12 2.5 12Z" /><circle cx="12" cy="12" r="2.5" /></svg></button></span></label>
