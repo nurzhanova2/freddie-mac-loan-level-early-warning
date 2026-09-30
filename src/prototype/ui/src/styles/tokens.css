@@ -59,7 +59,7 @@
   /* Montserrat is the human-facing face; fallbacks preserve offline Docker operation. */
   --font-display: Montserrat, "Helvetica Neue", Arial, sans-serif;
   --font-text: Montserrat, "Helvetica Neue", Arial, sans-serif;
-  --font-mono: "Red Hat Mono", "SFMono-Regular", Consolas, monospace;
+  --font-mono: Montserrat, "Helvetica Neue", Arial, sans-serif;
   --text-caption: 0.75rem;
   --text-body-sm: 0.875rem;
   --text-body: 1rem;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AppSidebar from '../components/AppSidebar.jsx';
 import Topbar from '../components/Topbar.jsx';
 import EwsPages from '../pages/EwsPages.jsx';
@@ -15,6 +15,9 @@ function App() {
     const token = sessionStorage.getItem('suptech_access_token');
     return token ? { username: sessionStorage.getItem('suptech_username'), role: sessionStorage.getItem('suptech_role') } : null;
   });
+  useEffect(() => {
+    document.documentElement.lang = language;
+  }, [language]);
   const selectedScreen = screenGroups.flatMap((group) => group.screens)
     .find((screen) => screen.id === activeScreen);
   function logout() {
